@@ -57,8 +57,8 @@ $ helm -n harbor install harbor . \
     --set expose.ingress.className=nginx \
     --set persistence.enabled=false \
     --set harborAdminPassword=admin \
-    --set expose.ingress.hosts.core=harbor.cjs.com \
-    --set externalURL=https://harbor.cjs.com \
+    --set expose.ingress.hosts.core=harbor-cjs.duckdns.org \
+    --set externalURL=https://harbor-cjs.duckdns.org \
     --set nginx.tls.enabled=true 
     
     
@@ -87,19 +87,144 @@ $ helm -n harbor delete harbor
 ## Image Push&Pull&Remove Test
 
 ```sh
-$ docker login harbor.cjs.com
+$ docker login https://harbor-cjs.duckdns.org
 
-$ docker tag spring-test:1.0.0 harbor.cjs.com/edu/spring-test:1.0.0
-$ docker push harbor.cjs.com/edu/spring-test:1.0.0
+#로그인 실패시
+$ sudo vi /etc/docker/daemon.json
+{
+  "builder": {
+    "gc": {
+      "defaultKeepStorage": "20GB",
+      "enabled": true
+    }
+  },
+  "experimental": false,
+  "features": {
+    "buildkit": true
+  },
+  "insecure-registries": [                             # <-- 추가
+    "harbor.cjs.com"
+  ]
+}
 
-$ docker pull harbor.cjs.com/edu/spring-test:1.0.0
+
+$ docker tag spring-test:1.0.0 harbor-cjs.duckdns.org/edu/spring-test:1.0.0
+$ docker push harbor-cjs.duckdns.org/edu/spring-test:1.0.0
+$ docker rmi harbor-cjs.duckdns.org/edu/spring-test:1.0.0
+$ docker pull harbor-cjs.duckdns.org/edu/spring-test:1.0.0
+
+
+$ docker tag spring-test:1.0.0 public.ecr.aws/b3v0x0o0/cjs-edu:1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/cjs-edu:1.0.0
 
 $ docker images
 
-$ docker rmi harbor.cjs.com/edu/spring-test:1.0.0
+
 
 # 확인
 $ docker images
 
+```
+
+ImagePullSecrets 생성
+
+```sh
+$ kubectl create secret docker-registry registry-secret --docker-server=harbor-cjs.duckdns.org --docker-username=admin --docker-password=admin --docker-email=admin@admin -n jenkins-admin
+```
+
+
+
+test.yaml
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: test
+  name: test
+  namespace: jenkins-admin
+spec:
+  containers:
+  - image: public.ecr.aws/b3v0x0o0/cjs-edu:0.0.2
+    name: test
+    
+    
+    
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: test2
+  name: test2
+  namespace: jenkins-admin
+spec:
+  containers:
+  - image: cjs0533/spring-test:1.0.0
+    name: test2
+```
+
+
+
+
+
+```
+Failed to pull image "harbor-cjs.duckdns.org/edu/spring-test": failed to pull and unpack image "harbor-cjs.duckdns.org/edu/spring-test:latest": failed to resolve reference "harbor-cjs.duckdns.org/edu/spring-test:latest": failed to do request: Head "https://harbor-cjs.duckdns.org/v2/edu/spring-test/manifests/latest": tls: failed to verify certificate: x509: certificate signed by unknown authority
+
+```
+
+
+
+
+
+```sh
+cat <<'EOF' > kindconfig.yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+# 3 control plane node and 1 workers
+nodes:
+- role: control-plane
+# - role: worker
+containerdConfigPatches:
+- |-
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."harbor-cjs.duckdns.org"]
+    endpoint = ["https://kind:5000"]
+  [plugins."io.containerd.grpc.v1.cri".registry.configs."harbor-cjs.duckdns.org".tls]
+    insecure_skip_verify = true
+EOF
+
+
+$ brew install kind
+$ kind create cluster -v1 --config kindconfig.yaml
+```
+
+
+
+
+
+```yaml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+containerdConfigPatches:
+- |-
+  [plugins."io.containerd.grpc.v1.cri".registry.mirrors."harbor-cjs.duckdns.org"]
+    endpoint = ["http://10.52.212.167:9000"]
+  [plugins."io.containerd.grpc.v1.cri".registry.configs."harbor-cjs.duckdns.org".tls]
+    insecure_skip_verify = true 
 ```
 
