@@ -197,22 +197,13 @@ subjects:
 
 
 
-
-
-```
-$ kubectl create secret docker-registry regcred --docker-server=<your-registry-server> --docker-username=<your-name> --docker-password=<your-pword> --docker-email=<your-email>
-$ kubectl create secret docker-registry harbor --docker-server=harbor.cjs.com --docker-username=admin --docker-password=adminpass --docker-email=admin -n jenkins-admin
-```
-
-
-
 ---
 
-#### 2.2 Gitlab
+#### 2.2 Git Repository
 
-##### 2.2.1 GitLab Token 
+##### 2.2.1 Token 준비
 
-http://gitlab.ssongman.duckdns.org/
+##### GitLab 사용시
 
 ![image-20230919090743189](asset/jenkins/image-20230919090743189.png)
 
@@ -228,7 +219,7 @@ http://gitlab.ssongman.duckdns.org/
 
 
 
-**GitHub 사용시**
+##### **GitHub 사용시**
 
 https://github.com/settings/tokens or github -> settings -> developer settings -> Personal access tokens
 
@@ -245,44 +236,6 @@ https://github.com/settings/tokens or github -> settings -> developer settings -
 **Token 저장**
 
 ![image-20230918151331800](asset/jenkins/image-20230918151331800.png)
-
-
-
----
-
-
-
-##### 2.2.2 프로젝트 생성
-
-
-
-**New Project**
-
-![image-20230923002419919](asset/jenkins/zzxcvasdasdasd.png)
-
-
-
-**Import Project**
-
-![image-20230923002522058](asset/jenkins/image-20230923002522058.png)
-
-**Import Project 정보입력**(http://gitlab.ssongman.duckdns.org/cjs/base-project.git)
-
-![image-20230923002120221](asset/jenkins/asdasdfzxcv.png)
-
-**Project Clone**
-
-```bash
-#base-project clone
-$ git clone http://user02:${GIT_TOKEN}@gitlab.ssongman.duckdns.org/cjs/base-project.git
-
-Credential : ${GIT_TOKEN} 입력
-
-```
-
-**user02, ${GIT_TOKEN} 일괄 변경**
-
-
 
 ---
 
@@ -444,8 +397,8 @@ e66ecbfeda0c7c37211bd3c18755b56c8344f88a5d265d966b1aec11ab7877c0
 $ curl localhost:8080
 Hello Spring World
 
-$ docker tag spring-test:1.0.0 harbor.cjs.com/edu/spring-test:1.0.0
-$ docker push harbor.cjs.com/edu/spring-test:1.0.0
+$ docker tag spring-test:1.0.0 public.ecr.aws/b3v0x0o0/spring-test:1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/spring-test:1.0.0
 
 ```
 
@@ -513,9 +466,9 @@ CONTAINER ID   IMAGE                COMMAND                  CREATED            
 $ curl localhost:3000
 Hello Express World
 
-$ docker tag express-test:1.0.0 harbor.cjs.com/edu/express-test:1.0.0
+$ docker tag express-test:1.0.0 public.ecr.aws/b3v0x0o0/express-test:1.0.0
 
-$ docker push harbor.cjs.com/edu/express-test:1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/express-test:1.0.0
 1.0.0: digest: sha256:b93ce4d64616e232916dbbf8938921b42a72de64652069e2b3ff89d26e54a219 size: 2836
 
 ```
@@ -589,9 +542,9 @@ b0d3cac56c35   flask-test:1.0.0     "python3 app.py"    3 seconds ago    Up 2 se
 $ curl localhost:8082
 Hello Flask World
 
-$ docker tag flask-test:1.0.0 harbor.cjs.com/edu/flask-test:1.0.0
-$ docker push harbor.cjs.com/edu/flask-test:1.0.0
-The push refers to repository [harbor.cjs.com/edu/flask-test]
+$ docker tag flask-test:1.0.0 public.ecr.aws/b3v0x0o0/flask-test:1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/flask-test:1.0.0
+The push refers to repository [public.ecr.aws/b3v0x0o0/flask-test]
 22e8ae1c18ff: Pushed
 865a5ae0c9f4: Pushed
 96eb9fd00fa3: Pushed
@@ -627,6 +580,10 @@ kustomize 다운로드 URL : https://github.com/kubernetes-sigs/kustomize
 
 ![image-20230916011301955](asset/jenkins/image-20230916011301955.png)
 
+
+
+##### 2.4.1 build-tool
+
 **podman build-tool**
 
 ```bash
@@ -640,8 +597,16 @@ Dockerfile 작성
 
 ```dockerfile
 #build 및 Image Push 를 위한 이미지 베이스 이미지
-FROM mattermost/podman:1.8.0 
+FROM mgoltzsche/podman:4.9.4-minimal
 COPY ./kustomize /usr/local/bin/kustomize
+RUN apk update \
+  && apk upgrade \
+  && apk add --no-cache --update python3 py3-pip coreutils bash \
+  && rm -rf /var/cache/apk/* \
+  && pip3 install pyyaml==5.3.1 \
+  && pip3 install -U awscli \
+  && apk --purge -v del py3-pip \
+  && apk add git
 ```
 
 
@@ -649,8 +614,8 @@ COPY ./kustomize /usr/local/bin/kustomize
 Image Build & Push
 
 ```bash
-$ docker build -t harbor.cjs.com/edu/build-tool:1.0.0 .
 $ docker build -t public.ecr.aws/b3v0x0o0/build-tool:1.0.0 .
+
 [+] Building 26.4s (7/7) FINISHED
  => [internal] load build definition from Dockerfile                                                      0.0s
  => => transferring dockerfile: 109B                                                                      0.0s
@@ -659,13 +624,18 @@ $ docker build -t public.ecr.aws/b3v0x0o0/build-tool:1.0.0 .
  => exporting to image                                                                                    0.1s
  => => exporting layers                                                                                   0.1s
  => => writing image sha256:ce60ae205666db7a58314bf584977a5b5f4aa9d762edfccb76561bd1c5b63c24              0.0s
- => => naming to nexus-repo.ssongman.duckdns.org/build-tool:1.0.0                             0.0s
+ => => naming to public.ecr.aws/b3v0x0o0/build-tool:1.0.0                             0.0s
 
 $ docker images
 REPOSITORY                                                      TAG              IMAGE ID       CREATED              SIZE
-nexus-repo.ssongman.duckdns.org/build-tool          1.0.0            ce60ae205666   About a minute ago   484MB
+public.ecr.aws/b3v0x0o0/build-tool          1.0.0            ce60ae205666   About a minute ago   484MB
 
-$ docker run -d harbor.cjs.com/edu/build-tool:1.0.0 sleep 365d
+$ docker run -d public.ecr.aws/b3v0x0o0/build-tool:1.0.0 sleep 365d
+$ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/build-tool:aws4 .
+$ docker push public.ecr.aws/b3v0x0o0/build-tool:aws4
+docker run -d public.ecr.aws/b3v0x0o0/build-tool:local sleep 365d
+
+
 
 $ docker ps
 $ docker exec -it ${CONTAINER_ID} bash
@@ -676,8 +646,8 @@ Go Version:         go1.11.6
 OS/Arch:            linux/amd64
 $ exit
 
-$ docker push harbor.cjs.com/edu/build-tool:1.0.0
-The push refers to repository [nexus-repo.ssongman.duckdns.org/build-tool]
+$ docker push public.ecr.aws/b3v0x0o0/build-tool:1.0.0
+The push refers to repository [public.ecr.aws/b3v0x0o0/build-tool]
 af60d788c1d5: Layer already exists
 c4cfb19af9c8: Layer already exists
 343ddf70e345: Layer already exists
@@ -690,7 +660,9 @@ dc3124d29e2e: Layer already exists
 
 ```
 
-**maven-build-tool **
+
+
+##### 2.4.2 maven-build-tool 
 
 Dockerfile 작성
 
@@ -720,13 +692,13 @@ $ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/maven-build-too
  => exporting to image                                                                 0.0s
  => => exporting layers                                                                0.0s
  => => writing image sha256:fb5cd9a2a8a34454fbf52e816e6dce0d24ac0b202cf30413542b513bc0 0.0s
- => => naming to nexus-repo.ssongman.duckdns.org/maven-build-tool:1.0.0    0.0s
+ => => naming to public.ecr.aws/b3v0x0o0/maven-build-tool:1.0.0    0.0s
 
 $ docker images
 REPOSITORY                                                      TAG       IMAGE ID       CREATED            SIZE
-harbor.cjs.com/edu/maven-build-tool    1.0.0     fb5cd9a2a8a3   About a minute ago 808MB
+public.ecr.aws/b3v0x0o0/maven-build-tool    1.0.0     fb5cd9a2a8a3   About a minute ago 808MB
 
-$ docker run -d harbor.cjs.com/edu/maven-build-tool:1.0.0 sleep 365d
+$ docker run -d public.ecr.aws/b3v0x0o0/maven-build-tool:1.0.0 sleep 365d
 
 $ docker exec -it ${CONTAINER_ID} bash
 $ mvn -version
@@ -737,8 +709,8 @@ Default locale: en, platform encoding: UTF-8
 OS name: "linux", version: "5.10.102.1-microsoft-standard-wsl2", arch: "amd64", family: "unix"
 $ exit
 
-$ docker push harbor.cjs.com/edu/maven-build-tool:1.0.0
-The push refers to repository [nexus-repo.ssongman.duckdns.org/maven-build-tool]
+$ docker push public.ecr.aws/b3v0x0o0/maven-build-tool:1.0.0
+The push refers to repository [public.ecr.aws/b3v0x0o0/maven-build-tool]
 4d950bb416bc: Layer already exists
 4ddad1bac86f: Layer already exists
 c14a8489df05: Layer already exists
@@ -751,15 +723,9 @@ f7bb7102ce10: Layer already exists
 
 ```
 
-Image Push 확인
-
-```
-http://harbor.cjs.com
-```
 
 
-
-**npm-build-tool** 
+##### 2.4.3 npm-build-tool
 
 Dockerfile 작성
 
@@ -771,7 +737,11 @@ COPY ./kustomize /usr/local/bin/kustomize
 Image Build & Push
 
 ```bash
-$ docker build -t harbor.cjs.com/edu/npm-build-tool:1.0.0 -f .\Dockerfile_npm .
+$ docker build -t public.ecr.aws/b3v0x0o0/npm-build-tool:1.0.0 -f .\Dockerfile_npm .
+
+#mac os
+$ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/npm-build-tool:1.0.0 -f Dockerfile_npm .
+
 [+] Building 3.0s (7/7) FINISHED                                                      
  => [internal] load build definition from Dockerfile_npm                              0.0s
  => => transferring dockerfile: 206B                                                  0.0s
@@ -785,15 +755,15 @@ $ docker build -t harbor.cjs.com/edu/npm-build-tool:1.0.0 -f .\Dockerfile_npm .
  => exporting to image                                                                0.1s
  => => exporting layers                                                               0.1s
  => => writing image sha256:57e6e02812f56ab3fdb029ead019e207a4462261cbf97c8680656e3d  0.0s
- => => naming to nexus-repo.ssongman.duckdns.org/npm-build-tool:1.0.0     0.0s
+ => => naming to public.ecr.aws/b3v0x0o0/npm-build-tool:1.0.0     0.0s
 
 
 $ docker images
 REPOSITORY                                                      TAG       IMAGE ID       CREATED            SIZE
-harbor.cjs.com/edu/npm-build-tool    1.0.0     fb5cd9a2a8a3   About a minute ago 924MB
+public.ecr.aws/b3v0x0o0/npm-build-tool    1.0.0     fb5cd9a2a8a3   About a minute ago 924MB
 
 
-$ docker run -d harbor.cjs.com/edu/npm-build-tool:1.0.0 sleep 365d
+$ docker run -d public.ecr.aws/b3v0x0o0/npm-build-tool:1.0.0 sleep 365d
 
 $ docker exec -it ${CONTAINER_ID} bash
 $ npm version
@@ -819,8 +789,8 @@ $ npm version
 }
 $ exit
 
-$ docker push harbor.cjs.com/edu/npm-build-tool:1.0.0
-The push refers to repository [nexus-repo.ssongman.duckdns.org/npm-build-tool]
+$ docker push public.ecr.aws/b3v0x0o0/npm-build-tool:1.0.0
+The push refers to repository [public.ecr.aws/b3v0x0o0/npm-build-tool]
 564b407be96a: Pushed
 be322b479aee: Layer already exists
 d41bcd3a037b: Layer already exists
@@ -834,15 +804,11 @@ f25ec1d93a58: Layer already exists
 
 ```
 
-Image Push 확인
-
-```
-http://harbor.cjs.com
-```
 
 
 
-**python-build-tool **
+
+##### **2.4.4 python-build-tool **
 
 Dockerfile 작성
 
@@ -856,7 +822,11 @@ Image Build & Push
 
 
 ```bash
-$ docker build -t harbor.cjs.com/edu/python-build-tool:1.0.0 -f .\Dockerfile_python .
+$ docker build -t public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0 -f .\Dockerfile_python .
+
+#mac os
+$ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0 -f Dockerfile_python .
+
 [+] Building 7.5s (7/7) FINISHED
  => [internal] load build definition from Dockerfile_python                                       0.0s
  => => transferring dockerfile: 221B                                                              0.0s
@@ -880,23 +850,23 @@ $ docker build -t harbor.cjs.com/edu/python-build-tool:1.0.0 -f .\Dockerfile_pyt
  => exporting to image                                                                            0.1s
  => => exporting layers                                                                           0.1s
  => => writing image sha256:a9d3550eb858e1e56ec49eb4025b82cd368351919cc211d201546f8e21846370      0.0s
- => => naming to nexus-repo.ssongman.duckdns.org/python-build-tool:1.0.0              0.0s
+ => => naming to public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0              0.0s
 
 
 $ docker images
 REPOSITORY                                                      TAG       IMAGE ID       CREATED            SIZE
-harbor.cjs.com/edu/python-build-tool    1.0.0     fb5cd9a2a8a3   About a minute ago 1.02GB
+public.ecr.aws/b3v0x0o0/python-build-tool    1.0.0     fb5cd9a2a8a3   About a minute ago 1.02GB
 
 
-$ docker run -d harbor.cjs.com/edu/python-build-tool:1.0.0 sleep 365d
+$ docker run -d public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0 sleep 365d
 
 $ docker exec -it ${CONTAINER_ID} bash
 $ python --version
 Python 3.11.5
 $ exit
 
-$ docker push harbor.cjs.com/edu/python-build-tool:1.0.0
-The push refers to repository [nexus-repo.ssongman.duckdns.org/python-build-tool]
+$ docker push public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0
+The push refers to repository [public.ecr.aws/b3v0x0o0/python-build-tool]
 700a6240cd12: Pushed
 49df279faf6c: Pushed
 f2c0489561b5: Pushed
@@ -908,12 +878,6 @@ acd413ce78f8: Layer already exists
 b8544860ba0b: Layer already exists
 1.0.0: digest: sha256:d61bf8efa50e5a2c0ca2d78486433b2aa1dc33f75a4bf31657b0465b8e9a5a97 size: 2218
 
-```
-
-Image Push 확인
-
-```
-http://harbor.cjs.com
 ```
 
 
@@ -1019,12 +983,7 @@ helm -n jenkins-admin install jenkins jenkinsci/jenkins --version=4.6.4 -f value
 --set agent.resources.requests.memory=1024Mi \
 --set agent.resources.limits.cpu=1024m \
 --set agent.resources.limits.memory=1024Mi        
- 
- 
-#harbor 세팅시 
---set 'controller.hostAliases[0].ip=54.180.57.210' \
---set 'controller.hostAliases[0].hostnames=harbor.cjs.com' \
---set controller.hostAliases.hostnames=harbor.cjs.com \
+
 
 #helm chart delete
 $ helm -n jenkins-admin delete jenkins
@@ -1087,6 +1046,10 @@ Jenkins 접속
 
 **정보입력**
 
+Username: icistrsa
+
+Password: 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
+
 ![image-20230923010524655](asset/jenkins/image-20230923010524655.png)
 
 
@@ -1107,7 +1070,7 @@ Jenkins 관리 -> System 이동
 
 **Global Properties 설정**(스크롤하여 Global Properties 확인)
 
-![image-20230918143337804](asset/jenkins/image-20230918143337804.png)
+![image-20240410232810086](jenkins.assets/image-20240410232810086.png)
 
 
 
@@ -1289,29 +1252,53 @@ docker가 **CRI(Container Runtime Interface)** 를 구현하지 않았고, kuber
 def label = "hello-${UUID.randomUUID().toString()}"
 podTemplate(label: label,
 	containers: [
-        containerTemplate(name: 'maven', image: 'public.ecr.aws/b3v0x0o0/maven-build-tool:1.0.0', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:1.0.0', ttyEnabled: true, command: 'cat', privileged:true)
-  ]) {
+        containerTemplate(name: 'maven', image: 'public.ecr.aws/b3v0x0o0/maven-build-tool:1.0.6', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:aws4', ttyEnabled: true, command: 'cat', privileged:true)
+    ]) {
     node(label) {
         stage('Get Source') {
             container('maven') {
                 sh"""
-                git clone http://user02:${GIT_TOKEN}@gitlab.35.209.207.26.nip.io/user02/base-project.git
-                cd base-project/sample/hello-world-spring/demo
+                git clone https://icistrsa:${GIT_TOKEN}@github.com/icistrsa/cicd_repository.git
+                cd cicd_repository/sample/hello-world-spring/demo
                 mvn clean package 
                 """
             }
         }
-        stage('Build & push') {
-            container('podman') {
-                    sh """
-                    cd base-project/sample/hello-world-spring/demo
-                    podman login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} ${NEXUS_HOST} --tls-verify=false
-                    podman build -t ${NEXUS_HOST}/user02/spring-jenkins:1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
-                    podman push ${NEXUS_HOST}/user02/spring-jenkins:1.0.0  --tls-verify=false
-                    """
+        
+        container('podman') {
+            stage('Build & push') {
+                sh """
+                    cd cicd_repository/sample/hello-world-spring/demo
+                    aws configure set aws_access_key_id AKIAZI2LI6AX7VAFZGQ3  
+                    aws configure set aws_secret_access_key l6wB7JaCrNxd+fzWSMVhkxt17QeEFd5wD1kYu0Sj
+                    aws configure set region ap-northeast-2 
+                    aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3v0x0o0
+
+                    podman build -t public.ecr.aws/b3v0x0o0/cjs-edu:1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
+                    podman push public.ecr.aws/b3v0x0o0/cjs-edu:1.0.0
+                """
             }
-        }
+            /* if used private registry
+            podman login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} ${NEXUS_HOST} --tls-verify=false
+            podman push ${NEXUS_HOST}/user02/spring-jenkins:1.0.0  --tls-verify=false
+            */
+            
+            stage('gitOps Update') {
+                sh"""
+                    cd cicd_repository/sample/gitops/hello-world-spring
+                    
+                    git config --global user.email "icistrsa"
+                    git config --global user.name "icistrsa"
+          
+                    kustomize edit set image public.ecr.aws/b3v0x0o0/cjs-edu:1.0.0
+                    
+                    git add .
+                    git commit -am 'update  from Jenkins'
+                    git push https://icistrsa:${GIT_TOKEN}@github.com/icistrsa/cicd_repository.git
+                """
+            }
+        } 
     }
 }
 
@@ -1333,8 +1320,8 @@ podTemplate(label: label,
 def label = "hello-${UUID.randomUUID().toString()}"
 podTemplate(label: label,
 	containers: [
-        containerTemplate(name: 'npm', image: 'harbor.cjs.com/edu/npm-build-tool:1.0.0', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'podman', image: 'harbor.cjs.com/edu/build-tool:1.0.0', ttyEnabled: true, command: 'cat', privileged:true)
+        containerTemplate(name: 'npm', image: 'public.ecr.aws/b3v0x0o0/npm-build-tool:1.0.0', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:1.0.0', ttyEnabled: true, command: 'cat', privileged:true)
   ]) {
     node(label) {
         stage('Get Source') {
@@ -1375,8 +1362,8 @@ def label = "hello-${UUID.randomUUID().toString()}"
 
 podTemplate(label: label,
 	containers: [
-        containerTemplate(name: 'flask', image: 'harbor.cjs.com/edu/python-build-tool:1.0.0', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'podman', image: 'harbor.cjs.com/edu/build-tool:1.0.0', ttyEnabled: true, command: 'cat', privileged:true)
+        containerTemplate(name: 'flask', image: 'public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:1.0.0', ttyEnabled: true, command: 'cat', privileged:true)
   ]) {
     node(label) {
         stage('Get Source') {
