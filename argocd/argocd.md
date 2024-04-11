@@ -419,6 +419,7 @@ argo-cd/templates/application-controller/clusterrolebinding.yaml
 argo-cd/templates/application-controller/deployment.yaml
 ...
 
+
 $ cd argo-cd
 
 ```
@@ -433,6 +434,14 @@ $ helm install argocd bitnami/argo-cd --version 5.1.2 -f values.yaml -n ${USER_I
 --set server.ingress.hostname=argocd.${USER_IDENTITY}.cloud.35.209.207.26.nip.io \
 --set server.insecure=true \
 --set config.secret.argocdServerAdminPassword=new1234! 
+
+
+helm install argocd bitnami/argo-cd --version 5.1.2 -f values.yaml -n argocd \
+--set server.ingress.enabled=true \
+--set server.ingress.hostname=argocd.cjs.com \
+--set server.ingress.ingressClassName=nginx \
+--set server.insecure=true \
+--set config.secret.argocdServerAdminPassword=admin
 
 $ helm delete argocd -n ${USER_IDENTITY}
 ```

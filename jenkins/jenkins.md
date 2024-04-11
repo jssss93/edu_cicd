@@ -1072,7 +1072,17 @@ Jenkins 관리 -> System 이동
 
 ![image-20240410232810086](jenkins.assets/image-20240410232810086.png)
 
+----
 
+이름 : AWS_ACCESS_ID
+
+값 : AKIAZI2LI6AX7VAFZGQ3
+
+---
+
+이름 : AWS_ACCESS_KEY
+
+값 :  
 
 ---
 
@@ -1270,8 +1280,8 @@ podTemplate(label: label,
             stage('Build & push') {
                 sh """
                     cd cicd_repository/sample/hello-world-spring/demo
-                    aws configure set aws_access_key_id AKIAZI2LI6AX7VAFZGQ3  
-                    aws configure set aws_secret_access_key l6wB7JaCrNxd+fzWSMVhkxt17QeEFd5wD1kYu0Sj
+                    aws configure set aws_access_key_id ${AWS_ACCESS_ID}  
+                    aws configure set aws_secret_access_key ${AWS_ACCESS_KEY}
                     aws configure set region ap-northeast-2 
                     aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3v0x0o0
 
@@ -1321,26 +1331,52 @@ def label = "hello-${UUID.randomUUID().toString()}"
 podTemplate(label: label,
 	containers: [
         containerTemplate(name: 'npm', image: 'public.ecr.aws/b3v0x0o0/npm-build-tool:1.0.0', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:1.0.0', ttyEnabled: true, command: 'cat', privileged:true)
-  ]) {
+        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:aws4', ttyEnabled: true, command: 'cat', privileged:true)
+    ]) {
     node(label) {
         stage('Get Source') {
             container('npm') {
                 sh"""
-                git clone http://user02:${GIT_TOKEN}@gitlab.35.209.207.26.nip.io/user02/base-project.git
+                node --version
+                git clone https://icistrsa:${GIT_TOKEN}@github.com/icistrsa/cicd_repository.git
                 """
             }
         }
-        stage('Build & push') {
-            container('podman') {
-                    sh """
-                    cd base-project/sample/hello-world-express
-                    podman login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} ${NEXUS_HOST} --tls-verify=false
-                    podman build -t ${NEXUS_HOST}/user02/express-jenkins:1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
-                    podman push ${NEXUS_HOST}/user02/express-jenkins:1.0.0  --tls-verify=false
-                    """
+
+        container('podman') {
+            stage('Build & push') {
+                sh """
+                    cd cicd_repository/sample/hello-world-express/
+                    aws configure set aws_access_key_id ${AWS_ACCESS_ID}  
+                    aws configure set aws_secret_access_key ${AWS_ACCESS_KEY}
+                    aws configure set region ap-northeast-2 
+                    aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3v0x0o0
+
+                    podman build -t public.ecr.aws/b3v0x0o0/edu-express:1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
+                    podman push public.ecr.aws/b3v0x0o0/edu-express:1.0.0
+                """
             }
-        }
+            /*
+             if used private registry
+            podman login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} ${NEXUS_HOST} --tls-verify=false
+            podman push ${NEXUS_HOST}/user02/spring-jenkins:1.0.0  --tls-verify=false
+            */
+            
+            stage('gitOps Update') {
+                sh"""
+                    cd cicd_repository/sample/gitops/hello-world-express
+                    
+                    git config --global user.email "icistrsa"
+                    git config --global user.name "icistrsa"
+          
+                    kustomize edit set image public.ecr.aws/b3v0x0o0/edu-express:1.0.0
+                    
+                    git add .
+                    git commit -am 'update  from Jenkins'
+                    git push https://icistrsa:${GIT_TOKEN}@github.com/icistrsa/cicd_repository.git
+                """
+            }
+        } 
     }
 }
 ```
@@ -1359,31 +1395,56 @@ podTemplate(label: label,
 
 ```groovy
 def label = "hello-${UUID.randomUUID().toString()}"
-
 podTemplate(label: label,
 	containers: [
-        containerTemplate(name: 'flask', image: 'public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:1.0.0', ttyEnabled: true, command: 'cat', privileged:true)
-  ]) {
+        containerTemplate(name: 'python', image: 'public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:aws4', ttyEnabled: true, command: 'cat', privileged:true)
+    ]) {
     node(label) {
         stage('Get Source') {
-            container('flask') {
+            container('python') {
                 sh"""
-                git clone http://user02:${GIT_TOKEN}@gitlab.35.209.207.26.nip.io/user02/base-project.git
+                python --version
+                git clone https://icistrsa:${GIT_TOKEN}@github.com/icistrsa/cicd_repository.git
+                
+                 
                 """
             }
         }
-        stage('Build & push') {
-            container('podman') {
-                    sh """
-                    cd base-project/sample/hello-world-flask
-                    podman login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} ${NEXUS_HOST} --tls-verify=false
-                    podman build -t ${NEXUS_HOST}/user02/flask-jenkins:1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
-                    podman push ${NEXUS_HOST}/user02/flask-jenkins:1.0.0  --tls-verify=false
-                    """
+        
+        container('podman') {
+            stage('Build & push') {
+                sh """
+                    cd cicd_repository/sample/hello-world-flask/
+                    aws configure set aws_access_key_id ${AWS_ACCESS_ID}  
+                    aws configure set aws_secret_access_key ${AWS_ACCESS_KEY}
+                    aws configure set region ap-northeast-2 
+                    aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3v0x0o0
+
+                    podman build -t public.ecr.aws/b3v0x0o0/edu-python:1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
+                    podman push public.ecr.aws/b3v0x0o0/edu-python:1.0.0
+                """
             }
-        }
-    
+            /* if used private registry
+            podman login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} ${NEXUS_HOST} --tls-verify=false
+            podman push ${NEXUS_HOST}/user02/spring-jenkins:1.0.0  --tls-verify=false
+            */
+            
+            stage('gitOps Update') {
+                sh"""
+                    cd cicd_repository/sample/gitops/hello-world-flask
+                    
+                    git config --global user.email "icistrsa"
+                    git config --global user.name "icistrsa"
+          
+                    kustomize edit set image public.ecr.aws/b3v0x0o0/edu-python:1.0.0
+                    
+                    git add .
+                    git commit -am 'update  from Jenkins'
+                    git push https://icistrsa:${GIT_TOKEN}@github.com/icistrsa/cicd_repository.git
+                """
+            }
+        } 
     }
 }
 
@@ -1447,6 +1508,12 @@ cron은 유닉스계열 컴퓨터 운영체제의 시간 기반 잡 스케줄러
 
 
 #### 7.2 WebHook
+
+Plugin Download
+
+![image-20240411234812998](jenkins.assets/image-20240411234812998.png)
+
+![image-20240411235838551](jenkins.assets/image-20240411235838551.png)
 
 **Jenkins Pipeline 설정**
 
