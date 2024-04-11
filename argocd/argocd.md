@@ -137,7 +137,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-spring
-  namespace: ${USER_IDENTITY}
+  namespace: argocd
 spec:
   replicas: 1
   revisionHistoryLimit: 3
@@ -150,7 +150,7 @@ spec:
         app: hello-spring
     spec:
       containers:
-      - image: nexus-repo.ssongman.duckdns.org/${USER_IDENTITY}/spring-jenkins:1.0.0
+      - image: public.ecr.aws/b3v0x0o0/cjs-edu
         name: hello-spring
         ports:
         - containerPort: 8080
@@ -164,10 +164,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello-spring-svc
-  nmaespace: ${USER_IDENTITY}
+  namespace: argocd
 spec:
   ports:
-  - port: 8080
+  - port: 80
     targetPort: 8080
   selector:
     app: hello-spring
@@ -180,11 +180,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: hello-world-spring-nexus
-  namespace: ${USER_IDENTITY}
+  namespace: argocd
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   rules:
-  - host: hello-world-spring.${USER_IDENTITY}.cloud.35.209.207.26.nip.io
+  - host: edu00-spring.com
     http:
       paths:
       - backend:
@@ -207,7 +207,7 @@ resources:
 - deployment.yaml
 - ingress.yaml
 images:
-- name: nexus-repo.ssongman.duckdns.org/${USER_IDENTITY}/spring-jenkins
+- name: public.ecr.aws/b3v0x0o0/cjs-edu
   newTag: 1.0.0
 ```
 
@@ -314,7 +314,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-flask
-  namespace: ${USER_IDENTITY}
+  namespace: argocd
 spec:
   replicas: 1
   revisionHistoryLimit: 3
@@ -327,11 +327,10 @@ spec:
         app: hello-flask
     spec:
       containers:
-      - image: nexus-repo.ssongman.duckdns.org/${USER_IDENTITY}/flask-jenkins:1.0.0
+      - image: public.ecr.aws/b3v0x0o0/edu-python
         name: hello-flask
         ports:
         - containerPort: 8082
-
 ```
 
 **sample/gitops/hello-world-flask/service.yaml**
@@ -341,10 +340,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello-flask-svc
-  namespace: ${USER_IDENTITY}
+  namespace: argocd
 spec:
   ports:
-  - port: 8080
+  - port: 80
     targetPort: 8082
   selector:
     app: hello-flask
@@ -356,12 +355,12 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hello-world-flask-nexus
-  namespace: ${USER_IDENTITY}
+  name: hello-world-flask-ingress
+  namespace: argocd
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   rules:
-  - host: hello-world-flask.${USER_IDENTITY}.cloud.35.209.207.26.nip.io
+  - host: edu00-python.com
     http:
       paths:
       - backend:
@@ -371,7 +370,6 @@ spec:
               number: 80
         path: /
         pathType: Prefix
-
 ```
 
 **sample/gitops/hello-world-flask/kustomize**
@@ -384,7 +382,7 @@ resources:
 - deployment.yaml
 - ingress.yaml
 images:
-- name: nexus-repo.ssongman.duckdns.org/${USER_IDENTITY}/flask-jenkins
+- name: public.ecr.aws/b3v0x0o0/edu-python
   newTag: 1.0.0
 ```
 
@@ -429,14 +427,7 @@ $ cd argo-cd
 #### 3.2 helm install&delete
 
 ```bash
-$ helm install argocd bitnami/argo-cd --version 5.1.2 -f values.yaml -n ${USER_IDENTITY} \
---set server.ingress.enabled=true \
---set server.ingress.hostname=argocd.${USER_IDENTITY}.cloud.35.209.207.26.nip.io \
---set server.insecure=true \
---set config.secret.argocdServerAdminPassword=new1234! 
-
-
-helm install argocd bitnami/argo-cd --version 5.1.2 -f values.yaml -n argocd \
+$ helm install argocd bitnami/argo-cd --version 5.1.2 -f values.yaml -n argocd \
 --set server.ingress.enabled=true \
 --set server.ingress.hostname=argocd.cjs.com \
 --set server.ingress.ingressClassName=nginx \
@@ -544,36 +535,58 @@ sample/jenkins-files/jenkins_maven Or Jenkins Pipline Script
 ```groovy
 def TAG = new Date().format('yyyyMMddHHmmss')
 
-...
-
-		stage('Build & push') {
-            container('podman') {
-                sh """
-                
-                ...
-                
-                podman build -t ${NEXUS_HOST}/${USER_IDENTITY}/spring-jenkins:${TAG} --cgroup-manager=cgroupfs --tls-verify=false . 
-                podman push ${NEXUS_HOST}/${USER_IDENTITY}/spring-jenkins:${TAG}  --tls-verify=false
+def label = "hello-${UUID.randomUUID().toString()}"
+podTemplate(label: label,
+	containers: [
+        containerTemplate(name: 'maven', image: 'public.ecr.aws/b3v0x0o0/maven-build-tool:1.0.6', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:aws4', ttyEnabled: true, command: 'cat', privileged:true)
+    ]) {
+    node(label) {
+        stage('Get Source') {
+            container('maven') {
+                sh"""
+                git clone https://icistrsa:${GIT_TOKEN}@github.com/icistrsa/cicd_repository.git
+                cd cicd_repository/sample/hello-world-spring/demo
+                mvn clean package 
                 """
             }
-        }        
-...
-        stage('gitOps Update') {
-            container('podman') {
-            sh"""
-            cd ${USER_IDENTITY}/base-project/sample/gitops/hello-world-spring
-            
-            git config --global user.email "jenkins@example.com"
-            git config --global user.name "Jenkins Pipeline"
-  
-            kustomize edit set image ${NEXUS_HOST}/${USER_IDENTITY}/spring-jenkins:${TAG}
-            
-            git add .
-            git commit -m 'update  from Jenkins'
-            git push http://${USER_IDENTITY}:${GIT_TOKEN}@gitlab.35.209.207.26.nip.io/${USER_IDENTITY}/base-project.git
-            """
-            }
         }
+        
+        container('podman') {
+            stage('Build & push') {
+                sh """
+                    cd cicd_repository/sample/hello-world-spring/demo
+                    aws configure set aws_access_key_id ${AWS_ACCESS_ID}  
+                    aws configure set aws_secret_access_key ${AWS_ACCESS_KEY}
+                    aws configure set region ap-northeast-2 
+                    aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3v0x0o0
+
+                    podman build -t public.ecr.aws/b3v0x0o0/cjs-edu:1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
+                    podman push public.ecr.aws/b3v0x0o0/cjs-edu:1.0.0
+                """
+            }
+            /* if used private registry
+            podman login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} ${NEXUS_HOST} --tls-verify=false
+            podman push ${NEXUS_HOST}/user02/spring-jenkins:1.0.0  --tls-verify=false
+            */
+            
+            stage('gitOps Update') {
+                sh"""
+                    cd cicd_repository/sample/gitops/hello-world-spring
+                    
+                    git config --global user.email "icistrsa"
+                    git config --global user.name "icistrsa"
+          
+                    kustomize edit set image public.ecr.aws/b3v0x0o0/cjs-edu:${TAG}
+                    
+                    git add .
+                    git commit -am 'update  from Jenkins'
+                    git push https://icistrsa:${GIT_TOKEN}@github.com/icistrsa/cicd_repository.git
+                """
+            }
+        } 
+    }
+}
 ```
 
 #### 6.3 변경사항 빌드
