@@ -4,13 +4,30 @@
 
 
 
-# 1. 실습 환경 준비(개인VM)
+# 1. 실습 환경 준비
 
-우리는 Kubernetes 기반에서 각종 실습을 진행할 것이다.
+우리는 Local 환경에서 Docker-Desktop 를 이용하여 Image build 및 RUN 을 통한 실습과 
 
-Cloud 환경에 Kubernetes가 설치된 VM 이 개인별 하나씩 준비되어 있어 있다.
+Public Cloud 인 AWS 기반 ECR,EKS 등의  환경에서 Kubernetes 상 CI/CD 과정에 대해 각종 실습을 진행할 것이다.
 
-그러므로 개인 PC에서 VM 접속할 수 있는 Terminal 을 설치해야 한다.
+이를 위한 아래 프로그램들을 설치하여 교육진행을 원할히 할 수 있도록 하자.
+
+
+
+### 1.1 AWS-CLI 2 설치
+
+* 다운로드 경로 : https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/getting-started-install.html
+
+  ```sh
+  $ aws configure 
+  AWS Access Key ID [None]: <발급한 Key id>
+  AWS Secret Access Key [None]: <발급한 Secret Access Key>
+  Default region name [None]: 
+  Default output format [None]:
+  
+  ```
+
+  
 
 
 
@@ -67,7 +84,7 @@ CMD / PowerShell / putty 와 같은 기본 터미널을 이용해도 되지만 �
 
 
 
-### (2) typora 환경설정
+### (2) Typora 환경설정
 
 원할한 실습을 위해 코드펜스 옵션을 아래와 같이 변경하자.
 
@@ -91,7 +108,7 @@ CMD / PowerShell / putty 와 같은 기본 터미널을 이용해도 되지만 �
 
 
 
-## 1.4 wsl2
+## 1.4 wsl2(필수)
 
 본인 PC 에 WSL이 설치되어 있는지 확인하자.
 
@@ -158,17 +175,34 @@ command 창에서 wsl 명령으로 설치여부를 확인 할 수 있다.
 
    - windows 터미널 설치 : https://docs.microsoft.com/ko-KR/windows/terminal/get-started
 
-   
-
-3. mobaxterm 에서 실행
-
-   - session > WSL 실행
 
 
 
+### 1.5  Docker Desktop 설치(필수)
+
+- 다운로드 주소 : https://www.docker.com/products/docker-desktop/
 
 
 
+### 1.6 Hosts 설정
+
+* hosts 파일이란 **IP 주소와 도메인 주소를 매핑해주는 파일**이다.
+
+* 보통, 주소창에 도메인으로 접속을 하면 DNS 서버를 통해 이에 대응하는 IP 주소를 찾아서 서버에 접속하게 된다. 이때 hosts 파일에 도메인과 IP를 임의로 지정하게 되면 DNS 서버보다 우선된다.
+
+* 실습중 Public Cloud 에 Jenkins,Argocd 및 각종 언어로된 웹서버를 provisioning 할 예정이다 도메인등록이 되지 않은 상태이므로 로컬환경에서 도메인을 인식 할 수 있도록 아래와 같이 hosts(관리자 권한으로 실행) 파일을 수정해준다
+
+  ```sh
+  #경로 C:\Windows\System32\drivers\etc\hosts
+  
+  15.165.54.43 ${USER_IDENTITY}-jenkins.com
+  15.165.54.43 ${USER_IDENTITY}-argocd.com
+  15.165.54.43 ${USER_IDENTITY}-spring.com
+  15.165.54.43 ${USER_IDENTITY}-python.com
+  15.165.54.43 ${USER_IDENTITY}-express.com
+  ```
+
+  
 
 
 # 2. 교육문서 Download
@@ -191,12 +225,12 @@ gitbash 실행후 command 명령어로 아래와 같이 임의의 디렉토리�
 # GitBash 실행
 
 # 본인 PC에서 아래 디렉토리를 생성
-$ mkdir -p /c/githubrepo
+$ mkdir -p /c/edu
  
  
-$ cd /c/githubrepo
+$ cd /c/edu
 
-$ git clone https://github.com/ssongman/ktds-edu-cloud-cicd.git
+$ git clone https://github.com/jssss93/edu_cicd.git
 Cloning into 'ktds-edu-cloud-cicd'...
 remote: Enumerating objects: 590, done.
 remote: Counting objects: 100% (41/41), done.
@@ -206,9 +240,6 @@ Receiving objects: 100% (590/590), 8.70 MiB | 9.77 MiB/s, done.
 Resolving deltas: 100% (259/259), done.
 
 
-$ ll /c/githubrepo
-drwxr-xr-x 1 ssong 197609 0 Jun 11 14:27 ktds-edu-cloud-cicd/
-
 ```
 
 
@@ -216,7 +247,7 @@ drwxr-xr-x 1 ssong 197609 0 Jun 11 14:27 ktds-edu-cloud-cicd/
 만약 교육중 (오타 변경 등의 사유로) 자료가 변경되어 다시 받아야 하는 경우 가 있을 경우 해당 위치에서 git pull 만 다시 받도록 하자.
 
 ```sh
-$ cd /c/githubrepo/ktds-edu-cloud-cicd
+$ cd /c/edu/ktds-edu-cloud-cicd
 
 $ git pull
 
@@ -239,19 +270,13 @@ $ git pull
 
 ## 2.2 Typora 로 readme.md 파일오픈
 
-
-
 - typora 로 오픈
 
 ```
 ## typora 에서 아래 파일 오픈
 
-C:\githubrepo\ktds-edu-cloud-cicd\README.md
+C:\edu\edu-cicd\README.md
 ```
-
-![image-20220702160433029](beforebegin.assets/image-20220702160433029.png)
-
-
 
 
 
@@ -259,127 +284,31 @@ C:\githubrepo\ktds-edu-cloud-cicd\README.md
 
 
 
-## 3.1 개인 VM 서버 주소 확인- ★
+## 3.1 개인별 USER_IDENTITY 확인
 
-개인별 VM Server 접속 환경 및 Kafka 실습을 위한 개인 Topic 정보를 확인하자.
-
-|  NO  | 담당자 |        소속         | VM Server | VM Server IP | namespace | 비고 |
-| :--: | :----: | :-----------------: | :-------: | :----------: | :-------: | :--: |
-|  1   | 송양종 | ICIS  Tr 아키텍처팀 | bastion01 | 34.xx.xx.xx  |  user01   |      |
-|  2   |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
-|      |        |                     |           |              |           |      |
+${USER_IDENTITY} 는 사용자별로 Kubernetes Namespace , ECR TAG 등을 구분 하기 위한 값으로 모든 교재마다 Replace(Ctrl+F) 처리 하여 실습을 진행한다
 
 
 
-
-
-
-
-## 3.2 ssh (Mobaxterm) 실행
-
-Mobaxterm 을 실행하여 VM 접속정보를 위한 신규 sesion 을 생성하자.
-
-- 메뉴
-  - Session  : 상단 좌측아이콘 클릭
-
-  - SSH : 팝업창 상단 아이콘 클릭
-
-![image-20230514022214007](beforebegin.assets/image-20230514022214007.png)
-
-빨간색 영역을 주의해서 입력한 후 접속하자.
-
-
-
-- Romote host
-  - 개인별로 접근 주소가 다르므로 위 수강생별  VM  Server IP 주소를 확인하자.
-  - ex)  bastion03 : 35.247.230.92
-
-- User
-  - Specify username 에 Check
-  - User : ktdseduuser  입력
-
-- Port : 22
-- Advanced SSH settings
-  - Use private key : C:\githubrepo\ktds-edu-cloud-cicd\gcp-vm-key\ktdseduuser
-    - 교육자료 Download 되는 자료에 위 key가 포함되어 있음
-
-
-
-
-
-
-## 3.3 VM 서버에서 실습자료 download
-
-실습 테스트를 위해서 실습 자료를 받아 놓자.
-
-이미 각자 VM에 해당 교육자료가  git clone 되어 있으므로 git pull 로 최신 데이터로 update 만 진행하자
-
-```sh
-
-# 최신 데이터를 한번 더 받는다.
-
-$ cd ~/githubrepo/ktds-edu-cloud-cicd
-$ git pull
-
-
-
-
-
-# 만약 pull일 잘 안되는 경우는 모두 삭제후 다시 git clone 받자.
-
-# 삭제
-$ rm -rf ~/githubrepo/ktds-edu-cloud-cicd/
-
-$ cd ~/githubrepo
-
-## git clone 수행
-$ git clone https://github.com/ssongman/ktds-edu-cloud-cicd.git
-Cloning into 'ktds-edu-cloud-cicd'...
-remote: Enumerating objects: 446, done.
-remote: Counting objects: 100% (446/446), done.
-remote: Compressing objects: 100% (341/341), done.
-remote: Total 446 (delta 132), reused 358 (delta 64), pack-reused 0
-Receiving objects: 100% (446/446), 17.34 MiB | 24.91 MiB/s, done.
-Resolving deltas: 100% (132/132), done.
-
-
-
-# 확인
-$ cd  ~/githubrepo/ktds-edu-cloud-cicd
-
-$ ll ~/githubrepo/ktds-edu-cloud-cicd
-
-drwxrwxr-x  8 ktdseduuser ktdseduuser 4096 Sep 23 17:11 .git/
--rw-rw-r--  1 ktdseduuser ktdseduuser 2101 Sep 23 17:11 README.md
-drwxrwxr-x  3 ktdseduuser ktdseduuser 4096 Sep 23 17:11 argocd/
-drwxrwxr-x  3 ktdseduuser ktdseduuser 4096 Sep 23 17:11 beforebegin/
-drwxrwxr-x  3 ktdseduuser ktdseduuser 4096 Sep 23 17:11 cicd/
-drwxrwxr-x  4 ktdseduuser ktdseduuser 4096 Sep 23 17:11 cloud-branch/
-drwxrwxr-x  2 ktdseduuser ktdseduuser 4096 Sep 23 17:11 cluster-setup/
-drwxrwxr-x  2 ktdseduuser ktdseduuser 4096 Sep 23 17:11 helm/
-drwxrwxr-x  3 ktdseduuser ktdseduuser 4096 Sep 23 17:11 jenkins/
-drwxrwxr-x  3 ktdseduuser ktdseduuser 4096 Sep 23 17:11 nexus/
-drwxrwxr-x  8 ktdseduuser ktdseduuser 4096 Sep 23 17:11 sample/
-
-
-```
-
-
-
+|  NO  | 담당자 |        소속         | USER_IDENTITY | 비고 |
+| :--: | :----: | :-----------------: | :-----------: | :--: |
+|  1   | 최종수 | ICIS  Tr 아키텍처팀 |    user01     |      |
+|  2   |        |                     |    user02     |      |
+|  3   |        |                     |    user03     |      |
+|  4   |        |                     |    user04     |      |
+|  5   |        |                     |    user05     |      |
+|  6   |        |                     |    user06     |      |
+|  7   |        |                     |    user07     |      |
+|  8   |        |                     |    user08     |      |
+|  9   |        |                     |    user09     |      |
+|  10  |        |                     |    user10     |      |
+|  11  |        |                     |    user11     |      |
+|  12  |        |                     |    user12     |      |
+|  13  |        |                     |    user13     |      |
+|  14  |        |                     |    user14     |      |
+|  15  |        |                     |    user15     |      |
+|  16  |        |                     |    user16     |      |
+|  17  |        |                     |    user17     |      |
+|  18  |        |                     |    user18     |      |
+|  19  |        |                     |    user19     |      |
+|  20  |        |                     |    user20     |      |
