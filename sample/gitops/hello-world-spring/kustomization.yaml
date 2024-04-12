@@ -5,5 +5,5 @@ resources:
 - deployment.yaml
 - ingress.yaml
 images:
-- name: nexus-repo.nexus.cloud.35.209.207.26.nip.io/user01/spring-jenkins
-  newTag: "1.0.0"
+- name: public.ecr.aws/b3v0x0o0/cjs-edu
+  newTag: 1.0.0

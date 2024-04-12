@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello-flask-svc
-  namespace: ${USER_IDENTITY}
+  namespace: argocd
 spec:
   ports:
   - port: 80

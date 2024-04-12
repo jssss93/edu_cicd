@@ -5,5 +5,5 @@ resources:
 - deployment.yaml
 - ingress.yaml
 images:
-- name: nexus-repo.nexus.cloud.35.209.207.26.nip.io/${USER_IDENTITY}/express-jenkins
+- name: public.ecr.aws/b3v0x0o0/edu-express
   newTag: 1.0.0

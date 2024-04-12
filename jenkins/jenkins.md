@@ -358,7 +358,8 @@ CMD ["world"]
 Sample Project
 
 ```bash
-$ cd sample/hello-world-spring/demo
+$ git clone https://github.com/icistrsa/cicd_repository.git
+$ cd cicd_repository/sample/hello-world-spring/demo
 ```
 
 
@@ -397,18 +398,12 @@ e66ecbfeda0c7c37211bd3c18755b56c8344f88a5d265d966b1aec11ab7877c0
 $ curl localhost:8080
 Hello Spring World
 
-$ docker tag spring-test:1.0.0 public.ecr.aws/b3v0x0o0/spring-test:1.0.0
-$ docker push public.ecr.aws/b3v0x0o0/spring-test:1.0.0
+$ docker tag spring-test:1.0.0 public.ecr.aws/b3v0x0o0/edu-spring:1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/edu-spring:1.0.0
 
 ```
 
 
-
-Image Push 확인
-
-```
-http://harbor.cjs.com
-```
 
 
 
@@ -466,17 +461,11 @@ CONTAINER ID   IMAGE                COMMAND                  CREATED            
 $ curl localhost:3000
 Hello Express World
 
-$ docker tag express-test:1.0.0 public.ecr.aws/b3v0x0o0/express-test:1.0.0
+$ docker tag express-test:1.0.0 public.ecr.aws/b3v0x0o0/edu-express:1.0.0
 
-$ docker push public.ecr.aws/b3v0x0o0/express-test:1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/edu-express:1.0.0
 1.0.0: digest: sha256:b93ce4d64616e232916dbbf8938921b42a72de64652069e2b3ff89d26e54a219 size: 2836
 
-```
-
-Image Push 확인
-
-```
-http://harbor.cjs.com
 ```
 
 
@@ -542,9 +531,9 @@ b0d3cac56c35   flask-test:1.0.0     "python3 app.py"    3 seconds ago    Up 2 se
 $ curl localhost:8082
 Hello Flask World
 
-$ docker tag flask-test:1.0.0 public.ecr.aws/b3v0x0o0/flask-test:1.0.0
-$ docker push public.ecr.aws/b3v0x0o0/flask-test:1.0.0
-The push refers to repository [public.ecr.aws/b3v0x0o0/flask-test]
+$ docker tag flask-test:1.0.0 public.ecr.aws/b3v0x0o0/edu-python:1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/edu-python:1.0.0
+The push refers to repository [public.ecr.aws/b3v0x0o0/edu-python]
 22e8ae1c18ff: Pushed
 865a5ae0c9f4: Pushed
 96eb9fd00fa3: Pushed
@@ -556,12 +545,6 @@ ce0f4c80e9b7: Pushed
 4693057ce236: Pushed
 1.0.0: digest: sha256:22da2f85ca92f5ddb0f74845bcad1e4b9d0e32f81a03b67998f8a0b2aabd20e5 size: 2200
 
-```
-
-Image Push 확인
-
-```
-http://harbor.cjs.com
 ```
 
 
@@ -631,9 +614,12 @@ REPOSITORY                                                      TAG             
 public.ecr.aws/b3v0x0o0/build-tool          1.0.0            ce60ae205666   About a minute ago   484MB
 
 $ docker run -d public.ecr.aws/b3v0x0o0/build-tool:1.0.0 sleep 365d
+
+#on mac os
 $ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/build-tool:aws4 .
+
 $ docker push public.ecr.aws/b3v0x0o0/build-tool:aws4
-docker run -d public.ecr.aws/b3v0x0o0/build-tool:local sleep 365d
+$ docker run -d public.ecr.aws/b3v0x0o0/build-tool:local sleep 365d
 
 
 
