@@ -99,9 +99,13 @@
 - Nexus란?
 
   - 사설레포지토리가 필요한 이유
-
 - Nexus 설치 & 설정
-
 - Image Upload/Download 테스트
 
-  
+
+
+## 2)Terraform EKS Setup
+
+* AWS CLI 설치 및 설정
+* tf 파일 구성 및 Provision
+* EKS Destroy
