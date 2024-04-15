@@ -6,9 +6,9 @@
 
 # 1. 실습 환경 준비
 
-우리는 Local 환경에서 Docker-Desktop 를 이용하여 Image build 및 RUN 을 통한 실습과 
+우리는 Local 환경에서 Docker-Desktop 를 이용하여 Image build 및 실행을 통한 실습과 
 
-Public Cloud 인 AWS 기반 ECR,EKS 등의  환경에서 Kubernetes 상 CI/CD 과정에 대해 각종 실습을 진행할 것이다.
+Public Cloud 인 AWS 기반 ECR,EKS 등의 환경에서 Kubernetes 상 CI/CD 과정에 대해 각종 실습을 진행할 것이다.
 
 이를 위한 아래 프로그램들을 설치하여 교육진행을 원할히 할 수 있도록 하자.
 
