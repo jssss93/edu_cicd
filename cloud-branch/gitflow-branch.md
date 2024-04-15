@@ -46,17 +46,14 @@ git flow 란?
 
 ```sh
 
-$ mkdir -p ~/temp/gittest
-  cd ~/temp/gittest
+$ mkdir git-test
 
-$ git config --global user.email "ssongmantop@gmail.com"
+$ git config --global user.email "icistrsa@gmail.com"
   git config --global user.name "root"
   git config --global init.defaultBranch main
 
 
 $ git init
-Initialized empty Git repository in /home/ktdseduuser/temp/gittest/.git/
-
 ```
 
 
@@ -118,7 +115,7 @@ nothing to commit, working tree clean
 # commit log 확인
 $ git log
 commit a90d3e357b64750a0394c7db35453e505bc33036 (HEAD -> main)
-Author: root <ssongmantop@gmail.com>
+Author: root <icistrsa@gmail.com>
 Date:   Sun Sep 24 04:50:10 2023 +0000
 
     create userlist file
@@ -208,13 +205,13 @@ nothing to commit, working tree clean
 
 $ git log
 commit 12b3ef437d93b3c30703bb3ad2781dea7abeadb9 (HEAD -> iss10)
-Author: root <ssongmantop@gmail.com>
+Author: root <icistrsa@gmail.com>
 Date:   Sun Sep 24 04:52:02 2023 +0000
 
     userlist Park1 추가됨
 
 commit a90d3e357b64750a0394c7db35453e505bc33036 (main)
-Author: root <ssongmantop@gmail.com>
+Author: root <icistrsa@gmail.com>
 Date:   Sun Sep 24 04:50:10 2023 +0000
 
     create userlist file
@@ -277,13 +274,13 @@ $ git commit -a -m "userlist Choi 추가"
 
 $ git log
 commit ccf5a5916e90c08d3370c74a1ab60e19bee458e1 (HEAD -> hotfix)
-Author: root <ssongmantop@gmail.com>
+Author: root <icistrsa@gmail.com>
 Date:   Sun Sep 24 04:54:55 2023 +0000
 
     userlist Choi 추가
 
 commit a90d3e357b64750a0394c7db35453e505bc33036 (main)
-Author: root <ssongmantop@gmail.com>
+Author: root <icistrsa@gmail.com>
 Date:   Sun Sep 24 04:50:10 2023 +0000
 
     create userlist file
@@ -363,13 +360,13 @@ merge 에 따른 별도 커밋이 발생되지 않았고 main 의 위치만 최�
 
 $ git log
 commit ccf5a5916e90c08d3370c74a1ab60e19bee458e1 (HEAD -> main, hotfix)
-Author: root <ssongmantop@gmail.com>
+Author: root <icistrsa@gmail.com>
 Date:   Sun Sep 24 04:54:55 2023 +0000
 
     userlist Choi 추가
 
 commit a90d3e357b64750a0394c7db35453e505bc33036
-Author: root <ssongmantop@gmail.com>
+Author: root <icistrsa@gmail.com>
 Date:   Sun Sep 24 04:50:10 2023 +0000
 
     create userlist file
@@ -486,13 +483,13 @@ Automatic merge failed; fix conflicts and then commit the result.
 
 $ git log
 commit ccf5a5916e90c08d3370c74a1ab60e19bee458e1 (HEAD -> main)
-Author: root <ssongmantop@gmail.com>
+Author: root <icistrsa@gmail.com>
 Date:   Sun Sep 24 04:54:55 2023 +0000
 
     userlist Choi 추가
 
 commit a90d3e357b64750a0394c7db35453e505bc33036
-Author: root <ssongmantop@gmail.com>
+Author: root <icistrsa@gmail.com>
 Date:   Sun Sep 24 04:50:10 2023 +0000
 
     create userlist file
@@ -611,13 +608,13 @@ $ git commit -m "merge from iss10"
 $ git log -2
 commit 19edacab32082a6119677555eddbd41a1f754941 (HEAD -> main)
 Merge: ccf5a59 e0c3d17
-Author: root <ssongmantop@gmail.com>
+Author: root <icistrsa@gmail.com>
 Date:   Sun Sep 24 05:08:22 2023 +0000
 
     merge from iss10
 
 commit e0c3d1765897c415e057b41ba91eb4c4081bbd4a (iss10)
-Author: root <ssongmantop@gmail.com>
+Author: root <icistrsa@gmail.com>
 Date:   Sun Sep 24 05:00:25 2023 +0000
 
     userlist Park2 추가됨
@@ -667,13 +664,13 @@ $ git branch -d iss10
 $ git log -p -2
 commit 19edacab32082a6119677555eddbd41a1f754941 (HEAD -> main)
 Merge: ccf5a59 e0c3d17
-Author: root <ssongmantop@gmail.com>
+Author: root <icistrsa@gmail.com>
 Date:   Sun Sep 24 05:08:22 2023 +0000
 
     merge from iss10
 
 commit e0c3d1765897c415e057b41ba91eb4c4081bbd4a (iss10)
-Author: root <ssongmantop@gmail.com>
+Author: root <icistrsa@gmail.com>
 Date:   Sun Sep 24 05:00:25 2023 +0000
 
     userlist Park2 추가됨
@@ -711,13 +708,13 @@ untracked 상태인 파일을 모두 삭제한다.
 신규 파일을 생성후 이를 원복하고자 할때 사용된다.
 
 ```sh
-$ cd ~/temp/gittest
+$ cd git-test
 
 
 # 신규 파일 생성
 $ echo "some1" > some.txt
-  mkdir somedir
-  echo "some2" > somedir/some.txt
+$ mkdir somedir
+$ echo "some2" > somedir/some.txt
 
 
 $ git status
@@ -858,7 +855,7 @@ $ cat userlist
 git reset 명령은 공통적으로 커밋을 되돌릴 때 사용한다.
 
 ```sh
-$ cd ~/song/gittest
+$ cd git-test
 
 
 # userlist 수정 및 commit
@@ -899,13 +896,6 @@ $ cat userlist
 
 $ git log --oneline -n1
 cf9f83f (HEAD -> reset-test, main) init update
-
-
-
-# [참고] 이전 커밋 형상으로 reset
-$ git reset --hard HEAD~
-HEAD is now at 42b5bd8 update
-
 
 ```
 
@@ -1011,11 +1001,6 @@ Changes not staged for commit:
 
 no changes added to commit (use "git add" and/or "git commit -a")
 
-
-
-
-$ git clean 
-
 ```
 
 
@@ -1051,7 +1036,7 @@ ours 나  theirs 옵션을 사용하면 출동 발생시 두 저장소 중 한 �
 
 
 ```sh
-$ cd ~/temp/gittest
+$ cd git-test
 
 # 1) main 
 $ git switch main
@@ -1200,7 +1185,7 @@ $ cat userlist
 
 ```sh
 
-$ cd ~/temp/gittest
+$ cd git-test
 
 
 # git test 작업을 모두 삭제시
@@ -1391,11 +1376,12 @@ hotfix/{name}
 git 과 git flow 는 서로 다른 설치물이며 아래와 같이 각각 설치가 필요하다.
 
 ```sh
-
+#on ubuntu
 $ sudo apt-get install git
-
 $ sudo apt-get install git-flow
 
+#on mac os
+$ brew install git-flow-avh
 
 
 # 버젼 확인
@@ -1422,8 +1408,8 @@ $ git flow version
 ### git flow init
 
 ```sh
-$ mkdir -p ~/temp/gitflowtest
-  cd ~/temp/gitflowtest
+$ mkdir gitflow-test
+$ cd gitflow-test
 
 
 
@@ -1433,7 +1419,7 @@ $ git config --global init.defaultBranch master
 
 $ git flow init
 
-Initialized empty Git repository in /home/ktdseduuser/song/gittest/gitflow/.git/
+Initialized empty Git repository in gitflow-test/.git/
 No branches exist yet. Base branches must be created now.
 Branch name for production releases: [master]          # <-- 어떤 브랜치를 production용으로 사용할 것인지
 Branch name for "next release" development: [develop]  # <-- 다음 릴리즈 브랜치는 어디 기반으로 할 것인지
@@ -1445,7 +1431,7 @@ Release branches? [release/]
 Hotfix branches? [hotfix/]
 Support branches? [support/]
 Version tag prefix? []
-Hooks and filters directory? [/home/ktdseduuser/song/gittest/gitflow/.git/hooks]
+Hooks and filters directory? [gitflow-test/.git/hooks]
 
 $ git branch -a
 * develop
@@ -1606,15 +1592,15 @@ git flow 를 이해하기 위함이므로 remote 연결없이 local 에서만 �
 
 ```sh
 
-$ rm -rf ~/temp/gitflowtest
-  mkdir ~/temp/gitflowtest
-  cd ~/temp/gitflowtest
+$ rm -rf gitflow-test
+$ mkdir gitflow-test
+$ cd gitflow-test
 
 
 # 개발 디렉토리에는 기능 A 와 기능 B가 있다고 가정한다.
 # Sample Data file 생성
 $ echo aaa > A
-  echo bbb > B
+$ echo bbb > B
 
 ```
 
@@ -1629,7 +1615,7 @@ git init 이후에는 반드시 초기 commit 을 수행해야 한다.
 ```sh
 
 # 초기 기본Branch 설정
-$ git config --global user.email "ssongmantop@gmail.com"
+$ git config --global user.email "icistrsa@gmail.com"
   git config --global user.name "root"
   git config --global init.defaultBranch master
   
@@ -1702,7 +1688,7 @@ feature branch는 develop branch 를 기반으로 생성됨
 ```sh
 
 # branch 확인
-~/temp/gitflowtest(feature/test)$ git branch -a
+gitflow-test(feature/test)$ git branch -a
   develop
 * feature/test
   master
@@ -1715,18 +1701,18 @@ A 파일 삭제
 
 ```sh
 
-~/temp/gitflowtest(feature/test)$ ll
+gitflow-test(feature/test)$ ll
 -rw-rw-r-- 1 ktdseduuser ktdseduuser    4 Sep 24 09:38 A
 -rw-rw-r-- 1 ktdseduuser ktdseduuser    4 Sep 24 09:38 B
 
 
-~/temp/gitflowtest(feature/test)$ rm A
+gitflow-test(feature/test)$ rm A
 
-~/temp/gitflowtest(feature/test)$ ll
+gitflow-test(feature/test)$ ll
 -rw-rw-r-- 1 ktdseduuser ktdseduuser    4 Sep 20 10:10 B
 
 
-~/temp/gitflowtest(feature/test)$ git status
+gitflow-test(feature/test)$ git status
 On branch feature/test
 Changes not staged for commit:
   (use "git add/rm <file>..." to update what will be committed)
@@ -1735,9 +1721,9 @@ Changes not staged for commit:
         deleted:    A
 
 # add & commit
-~/temp/gitflowtest(feature/test)$ git add -A
+gitflow-test(feature/test)$ git add -A
 
-~/temp/gitflowtest(feature/test)$ git commit -m "delete A"
+gitflow-test(feature/test)$ git commit -m "delete A"
 [feature/test 7c1d3a1] delete A
  2 files changed, 2 deletions(-)
  delete mode 100644 .gitignore
@@ -1745,7 +1731,7 @@ Changes not staged for commit:
 
 
 
-~/temp/gitflowtest(feature/test)$ git status
+gitflow-test(feature/test)$ git status
 
 On branch feature/test
 nothing to commit, working tree clean
@@ -1759,7 +1745,7 @@ nothing to commit, working tree clean
 
 ```sh
 
-~/temp/gitflowtest(feature/test)$ git flow feature finish test
+gitflow-test(feature/test)$ git flow feature finish test
 
 Switched to branch 'develop'
 Updating daf8b40..7c1d3a1
@@ -1777,11 +1763,11 @@ Summary of actions:
 - You are now on branch 'develop'
 
 
-~/temp/gitflowtest(develop)$ git branch -a
+gitflow-test(develop)$ git branch -a
 * develop
   master
 
-~/temp/gitflowtest(develop)$ ll/
+gitflow-test(develop)$ ll/
 -rw-rw-r-- 1 ktdseduuser ktdseduuser    4 Sep 24 09:38 B
 
 
@@ -1797,7 +1783,7 @@ Summary of actions:
 
 ```sh
 
-~/temp/gitflowtest(develop)$ git flow release start 1.0.0
+gitflow-test(develop)$ git flow release start 1.0.0
 Switched to a new branch 'release/1.0.0'
 
 Summary of actions:
@@ -1812,7 +1798,7 @@ Follow-up actions:
      git flow release finish '1.0.0'
 
 
-~/temp/gitflowtest(release/1.0.0)$ git branch -a
+gitflow-test(release/1.0.0)$ git branch -a
   develop
   master
 * release/1.0.0
@@ -1841,16 +1827,16 @@ Release 브랜치에서 테스를 수행 도중 갑자기 기능 C 를 추가해
 
 # 기능 C 추가
 
-~/temp/gitflowtest(release/1.0.0)$ echo ddd > C
+gitflow-test(release/1.0.0)$ echo ccc > C
 
-~/temp/gitflowtest(release/1.0.0)$ ll
+gitflow-test(release/1.0.0)$ ll
 -rw-rw-r-- 1 ktdseduuser ktdseduuser    4 Sep 20 10:10 B
 -rw-rw-r-- 1 ktdseduuser ktdseduuser    4 Sep 20 10:10 C
 -rw-rw-r-- 1 ktdseduuser ktdseduuser    4 Sep 20 13:57 C
 
-~/temp/gitflowtest(release/1.0.0)$ git add -A
+gitflow-test(release/1.0.0)$ git add -A
 
-~/temp/gitflowtest(release/1.0.0)$ git commit -m "C added"
+gitflow-test(release/1.0.0)$ git commit -m "C added"
 [release/1.0.0 e20c05c] C added
  1 file changed, 1 insertion(+)
  create mode 100644 C
@@ -1922,12 +1908,12 @@ release finish 때 진행하는 작업을 살펴보자
 
 ```sh
 
-~/temp/gitflowtest(develop)$ git branch -a
+gitflow-test(develop)$ git branch -a
 * develop
   master
 
 
- ~/temp/gitflowtest(develop)$ git tag -l
+ gitflow-test(develop)$ git tag -l
 1.0.0
 
 
@@ -1969,7 +1955,7 @@ Follow-up actions:
      git flow hotfix finish '1.0.1'
 
 
-~/temp/gitflowtest(hotfix/1.0.1)$
+gitflow-test(hotfix/1.0.1)$
  
  
 ```
@@ -1983,17 +1969,17 @@ Follow-up actions:
 
 ### 기능 D 추가
 
-~/temp/gitflowtest(hotfix/1.0.1)$ echo ddd > D
+gitflow-test(hotfix/1.0.1)$ echo ddd > D
  
-~/temp/gitflowtest(hotfix/1.0.1)$ ll
+gitflow-test(hotfix/1.0.1)$ ll
 -rw-rw-r-- 1 ktdseduuser ktdseduuser    4 Sep 20 10:10 B
 -rw-rw-r-- 1 ktdseduuser ktdseduuser    4 Sep 20 10:10 C
 -rw-rw-r-- 1 ktdseduuser ktdseduuser    4 Sep 20 15:31 D
 
 
 # add & commit
-~/temp/gitflowtest(hotfix/1.0.1)$ git add .
-~/temp/gitflowtest(hotfix/1.0.1)$ git commit -m "create D"
+gitflow-test(hotfix/1.0.1)$ git add .
+gitflow-test(hotfix/1.0.1)$ git commit -m "create D"
 
 ```
 
@@ -2010,7 +1996,7 @@ Follow-up actions:
 
 # hotfix finish
 
-~/temp/gitflowtest(hotfix/1.0.1)$ git flow hotfix finish 1.0.1
+gitflow-test(hotfix/1.0.1)$ git flow hotfix finish 1.0.1
 Switched to branch 'develop'
 Your branch is up to date with 'origin/develop'.
 Deleted branch hotfix/1.0.1 (was 25f9958).
@@ -2031,110 +2017,13 @@ Summary of actions:
 
 
 
-
-
-## 4) git flow 실습3
-
-
-
-위에서 수행한 git flow 실습자료는 local 에서만 존재한다.
-
-git  브랜치를 넘나드는 작업을 한다는 것은 협업을 위한 작업이므로 remote ropogitory 가 존재해야 한다.
-
-이 작업을 위해서 remote 에 empty repo 를 연결 및 생성하는 작업을 해보자.
-
-
-
-
-
-### (1) git remote
-
-```sh
-
-
-$ cd ~/temp/gitflowtest
-
-
-$ git switch master
- 
-# origin 이라는 이름을 가진 remote 저장소를 지정
-$ git remote add origin http://gitlab.35.209.207.26.nip.io/root/user01.git
-
-$ git remote -v
-origin  http://gitlab.35.209.207.26.nip.io/root/user01.git (fetch)
-origin  http://gitlab.35.209.207.26.nip.io/root/user01.git (push)
-
-
-
-# 모든 branch 업로드 ( master / develop / 1.0.0 )
-$ git push origin master develop 1.0.0
-
-Enumerating objects: 12, done.
-Counting objects: 100% (12/12), done.
-Delta compression using up to 2 threads
-Compressing objects: 100% (8/8), done.
-Writing objects: 100% (12/12), 1.01 KiB | 516.00 KiB/s, done.
-Total 12 (delta 2), reused 0 (delta 0), pack-reused 0
-remote:
-remote: To create a merge request for develop, visit:
-remote:   http://gitlab-c9587ff7c-6l4q4/root/user01/-/merge_requests/new?merge_request%5Bsource_branch%5D=develop
-remote:
-To http://gitlab.35.209.207.26.nip.io/root/user01.git
- * [new branch]      master -> master
- * [new branch]      develop -> develop
- * [new tag]         1.0.0 -> 1.0.0
-
-```
-
-
-
-
-
-### (2) git remote 확인
-
-http://gitlab.35.209.207.26.nip.io/root/user01
-
-
-
-
-
-### (3) [참고] git repogitory 생성
-
-
-
-* gitlab remote Server 접근
-  * 주소 : http://gitlab.35.209.207.26.nip.io/
-  * ID : root
-  * pass : ktdspass!
-
-
-
-* 자신만의 git empty repo 를 생성
-  * 메뉴 : Projects > New project
-  * Create blank project 선택
-  * Project name : user01
-  * Project URL 에 아래와 같이 셋팅
-    * http://gitlab.35.209.207.26.nip.io/     root      /    user01
-  * Visibility Level : publc 로 선택
-  * Project Configuration
-    * Initialize repogitory  선택해제
-  * Create project 버튼 클릭
-* 주소 확인 및 Copy
-  * clone 버튼 클릭
-    * Clone with HTTP  부분 확인 및 URL Copy
-    * http://gitlab.35.209.207.26.nip.io/root/test01.git
-
-
-
-
-
-## 5) Clean up
+## 4) Clean up
 
 ```sh
 
 
 # git flow init 작업을 삭제하려면...
-$ cd ~/temp/gitflowtest
+$ cd gitflow-test
 
 $ rm -rf *
   rm -rf .git
