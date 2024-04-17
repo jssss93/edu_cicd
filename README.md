@@ -1,4 +1,4 @@
-# ktds-edu-cloud-cicd
+# ktds-edu-cicd
 클라우드 AP 소스코드 형상관리 전략 및 CI/CD 실전
 
 
@@ -13,11 +13,25 @@
 
 # 1. 시작하기전에 ( [문서 보기](./beforebegin/beforebegin.md) )
 
+* 실습 환경 준비
+  * WSL2
+  * Docker-Desktop
+  * AWS-CLI 2
+  * GitBash
+  * Typora
+  * Hosts Setting
+  * Helm Install
+* 교육문서 Download
+
+# 2. CI/CD ( [문서 보기](./cicd/CICD.md) )
+
+- CI/CD 개요
+- CI/CD 의미
+- CI/CD 왜 사용해야 하는가?
 
 
 
-
-# 2. 12 Factor 방법론 ( [문서 보기](./cloud-branch/12factors.md) )
+# 3. 12 Factor 방법론 ( [문서 보기](./cloud-branch/12factors.md) )
 
 - 12 Factor 방법론이란?
 - 왜 12 Factor 방법론을 사용해야 하나?
@@ -25,23 +39,12 @@
 
 
 
-# 3. Git Flow Branch 전략 ( [문서 보기](./cloud-branch/gitflow-branch.md) )
+# 4. Git Flow Branch 전략 ( [문서 보기](./cloud-branch/gitflow-branch.md) )
 
 - Git Flow 개요
 - git 명령들
 - Git Flow Branch 전략
 - Git Flow 실습
-
-
-
-
-# 4. CI/CD ( [문서 보기](./cicd/CICD.md) )
-
-- CI/CD 개요
-- CI/CD 의미
-- CI/CD 왜 사용해야 하는가?
-
-
 
 
 
@@ -69,12 +72,14 @@
 
 
 
-#  별첨1. EduCluster Solution Setup ( [문서 보기](./cluster-setup/cluster-setup.md) )
+#  별첨1. Cluster Setup ( [문서 보기](./cluster-setup/cluster-setup.md) )
 
 ## 1) EduCluster Setup
 
 - kubernetes Install (k3s)
 - 기타 Tool Setup
+
+
 
 ## 2) GitLab Setup
 
@@ -82,13 +87,13 @@
 - ingress
 - 권한부여
 
-## 3) Helm
-
-- helm chart 와 Architecture
-- helm client download install
-- bitnami repo 추가
 
 
+## 3)Terraform EKS Setup
+
+* AWS CLI 설치 및 설정
+* tf 파일 구성 및 Provision
+* EKS Destroy
 
 
 
@@ -104,8 +109,3 @@
 
 
 
-## 2)Terraform EKS Setup
-
-* AWS CLI 설치 및 설정
-* tf 파일 구성 및 Provision
-* EKS Destroy
