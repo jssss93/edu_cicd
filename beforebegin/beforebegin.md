@@ -372,7 +372,7 @@ $ mkdir -p /c/edu
 $ cd /c/edu
 
 $ git clone https://github.com/jssss93/edu_cicd.git
-Cloning into 'ktds-edu-cloud-cicd'...
+Cloning into 'edu_cicd'...
 remote: Enumerating objects: 590, done.
 remote: Counting objects: 100% (41/41), done.
 remote: Compressing objects: 100% (26/26), done.
@@ -388,7 +388,7 @@ Resolving deltas: 100% (259/259), done.
 만약 교육중 (오타 변경 등의 사유로) 자료가 변경되어 다시 받아야 하는 경우 가 있을 경우 해당 위치에서 git pull 만 다시 받도록 하자.
 
 ```sh
-$ cd /c/edu/ktds-edu-cloud-cicd
+$ cd ktds-edu-cloud-cicd
 
 $ git pull
 
