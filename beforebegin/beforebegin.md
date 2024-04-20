@@ -105,13 +105,17 @@ command 창에서 wsl 명령으로 설치여부를 확인 할 수 있다.
   AWS Secret Access Key [None]: l6wB7JaCrNxd+fzWSMVhkxt17QeEFd5wD1XXXXXX
   Default region name [None]: ap-northeast-2
   Default output format [None]:
+  ```
   
+* 클러스터 접속
+
+  ```sh
+  #설정된 계정정보로 ECR Repository 에 접속한다
   $ aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423644719.dkr.ecr.us-east-1.amazonaws.com
-  
+  Login Succeeded
   
   #인증 토큰을 검색하고 레지스트리에 대해 Docker 클라이언트를 인증합니다.
   $ aws eks --region ap-northeast-2 update-kubeconfig --name education-eks-dCr3ILQB
-  
   kubectl get node    
   NAME                                            STATUS   ROLES    AGE    VERSION
   ip-10-0-1-181.ap-northeast-2.compute.internal   Ready    <none>   122m   v1.28.5-eks-5e0fdde
@@ -129,7 +133,10 @@ command 창에서 wsl 명령으로 설치여부를 확인 할 수 있다.
   ip-10-0-3-243.ap-northeast-2.compute.internal   Ready    <none>   122m   v1.28.5-eks-5e0fdde
   ip-10-0-3-48.ap-northeast-2.compute.internal    Ready    <none>   122m   v1.28.5-eks-5e0fdde
   ip-10-0-3-93.ap-northeast-2.compute.internal    Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  
   ```
+  
+  
 
 
 
