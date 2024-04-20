@@ -461,7 +461,7 @@ CONTAINER ID   IMAGE                COMMAND                  CREATED            
 $ curl localhost:3000
 Hello Express World
 
-$ docker tag edu-express:1.0.0 public.ecr.aws/b3v0x0o0/edu-express:${USER_IDENTITY}-1.0.0
+$ docker tag edu-express:${USER_IDENTITY}-1.0.0 public.ecr.aws/b3v0x0o0/edu-express:${USER_IDENTITY}-1.0.0
 
 $ docker push public.ecr.aws/b3v0x0o0/edu-express:${USER_IDENTITY}-1.0.0
 1.0.0: digest: sha256:b93ce4d64616e232916dbbf8938921b42a72de64652069e2b3ff89d26e54a219 size: 2836
