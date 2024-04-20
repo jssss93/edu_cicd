@@ -211,23 +211,23 @@ command 창에서 wsl 명령으로 설치여부를 확인 할 수 있다.
   |  NO  | 담당자 |        소속         | USER_IDENTITY | 비고 |
   | :--: | :----: | :-----------------: | :-----------: | :--: |
   |  1   | 최종수 | ICIS  Tr 아키텍처팀 |    user01     |      |
-  |  2   |        |                     |    user02     |      |
-  |  3   |        |                     |    user03     |      |
-  |  4   |        |                     |    user04     |      |
-  |  5   |        |                     |    user05     |      |
-  |  6   |        |                     |    user06     |      |
-  |  7   |        |                     |    user07     |      |
-  |  8   |        |                     |    user08     |      |
-  |  9   |        |                     |    user09     |      |
-  |  10  |        |                     |    user10     |      |
-  |  11  |        |                     |    user11     |      |
-  |  12  |        |                     |    user12     |      |
-  |  13  |        |                     |    user13     |      |
-  |  14  |        |                     |    user14     |      |
-  |  15  |        |                     |    user15     |      |
-  |  16  |        |                     |    user16     |      |
-  |  17  |        |                     |    user17     |      |
-  |  18  |        |                     |    user18     |      |
+  |  2   | 한만권 |     Cloud CoE팀     |    user02     |      |
+  |  3   | 김미경 |     ICT컨설팅팀     |    user03     |      |
+  |  4   | 권오범 |  네트워크IT개발팀   |    user04     |      |
+  |  5   | 조다흰 |      DX개발팀       |    user05     |      |
+  |  6   | 김한길 |      ICT CoE팀      |    user06     |      |
+  |  7   | 김용재 |      ICT CoE팀      |    user07     |      |
+  |  8   | 박지수 |      SI개발팀       |    user08     |      |
+  |  9   | 신민진 |      SI개발팀       |    user09     |      |
+  |  10  | 최정우 |      SI개발팀       |    user10     |      |
+  |  11  | 이다은 |     유통수행팀      |    user11     |      |
+  |  12  | 조현섭 |   전략운영혁신팀    |    user12     |      |
+  |  13  | 임예랑 |     OSS개발1팀      |    user13     |      |
+  |  14  | 곽현서 |   고객DX솔루션팀    |    user14     |      |
+  |  15  | 변상진 |   메세징플랫폼팀    |    user15     |      |
+  |  16  | 최선영 |   전략운영혁신팀    |    user16     |      |
+  |  17  | 김은정 |     BizDX개발팀     |    user17     |      |
+  |  18  | 박영은 |     BizDX개발팀     |    user18     |      |
   |  19  |        |                     |    user19     |      |
   |  20  |        |                     |    user20     |      |
 
@@ -236,11 +236,11 @@ command 창에서 wsl 명령으로 설치여부를 확인 할 수 있다.
   ```sh
   #경로 C:\Windows\System32\drivers\etc\hosts
   
-  15.165.54.43 ${USER_IDENTITY}-jenkins.com
-  15.165.54.43 ${USER_IDENTITY}-argocd.com
-  15.165.54.43 ${USER_IDENTITY}-spring.com
-  15.165.54.43 ${USER_IDENTITY}-python.com
-  15.165.54.43 ${USER_IDENTITY}-express.com
+  13.209.52.246 ${USER_IDENTITY}-jenkins.com
+  13.209.52.246 ${USER_IDENTITY}-argocd.com
+  13.209.52.246 ${USER_IDENTITY}-spring.com
+  13.209.52.246 ${USER_IDENTITY}-python.com
+  13.209.52.246 ${USER_IDENTITY}-express.com
   ```
 
 
