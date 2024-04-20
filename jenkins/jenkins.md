@@ -626,10 +626,7 @@ $ docker run -d public.ecr.aws/b3v0x0o0/build-tool:${USER_IDENTITY}-1.0.0 sleep 
 $ docker ps
 $ docker exec -it ${CONTAINER_ID} bash
 $ podman version
-Version:            1.8.0
-RemoteAPI Version:  1
-Go Version:         go1.11.6
-OS/Arch:            linux/amd64
+
 $ exit
 
 $ docker push public.ecr.aws/b3v0x0o0/build-tool:${USER_IDENTITY}-1.0.0
@@ -660,7 +657,7 @@ COPY ./kustomize /usr/local/bin/kustomize
 Image Build & Push
 
 ```bash
-$ docker build -t maven-build-tool:${USER_IDENTITY}-1.0.0 -f .Dockerfile_maven 
+$ docker build -t public.ecr.aws/b3v0x0o0/maven-build-tool:${USER_IDENTITY}-1.0.0 -f ./Dockerfile_maven .
 
 #mac OS Build
 $ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/maven-build-tool:${USER_IDENTITY}-1.0.0 -f Dockerfile_maven .
@@ -723,7 +720,7 @@ COPY ./kustomize /usr/local/bin/kustomize
 Image Build & Push
 
 ```bash
-$ docker build -t public.ecr.aws/b3v0x0o0/npm-build-tool:${USER_IDENTITY}-1.0.0 -f .\Dockerfile_npm .
+$ docker build -t public.ecr.aws/b3v0x0o0/npm-build-tool:${USER_IDENTITY}-1.0.0 -f ./Dockerfile_npm .
 
 #mac os
 $ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/npm-build-tool:${USER_IDENTITY}-1.0.0 -f Dockerfile_npm .
@@ -808,7 +805,7 @@ Image Build & Push
 
 
 ```bash
-$ docker build -t public.ecr.aws/b3v0x0o0/python-build-tool:${USER_IDENTITY}-1.0.0 -f .\Dockerfile_python .
+$ docker build -t public.ecr.aws/b3v0x0o0/python-build-tool:${USER_IDENTITY}-1.0.0 -f ./Dockerfile_python .
 
 #mac os
 $ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/python-build-tool:${USER_IDENTITY}-1.0.0 -f Dockerfile_python .
