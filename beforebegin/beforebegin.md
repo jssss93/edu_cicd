@@ -93,7 +93,17 @@ command 창에서 wsl 명령으로 설치여부를 확인 할 수 있다.
 
 
 
-## 1.3 AWS-CLI 2 설치
+## 1.3 gitBash 설치
+
+교육문서를 다운로드 받으려면 Git Command 가 필요하다. Windows 에서는 기본 제공되지 않아 별도 설치 해야 한다.
+
+- 다운로드 주소 : https://github.com/git-for-windows/git/releases/download/v2.40.1.windows.1/Git-2.40.1-64-bit.exe
+
+- 참조 링크 : https://git-scm.com/
+
+  
+
+## 1.4 AWS-CLI 2 설치
 
 * EKS Cluster 및 ECR 접근을 위해  aws-cli2 를 설치한다.
 
@@ -137,17 +147,6 @@ command 창에서 wsl 명령으로 설치여부를 확인 할 수 있다.
   ```
   
   
-
-
-
-## 1.4 gitBash 설치
-
-교육문서를 다운로드 받으려면 Git Command 가 필요하다. Windows 에서는 기본 제공되지 않아 별도 설치 해야 한다.
-
-- 다운로드 주소 : https://github.com/git-for-windows/git/releases/download/v2.40.1.windows.1/Git-2.40.1-64-bit.exe
-- 참조 링크 : https://git-scm.com/
-
-
 
 
 
