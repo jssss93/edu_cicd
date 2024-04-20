@@ -451,7 +451,7 @@ $ docker images
 REPOSITORY                                                 TAG              IMAGE ID       CREATED         SIZE
 edu-express                                               ${USER_IDENTITY}-1.0.0            e63790a33616   1 minutes ago   909MB
 
-$ docker run -d -p 3000:3000 edu-express:1.0.0
+$ docker run -d -p 3000:3000 edu-express:${USER_IDENTITY}-1.0.0
 7cc6e3a27c94cfd96a315e9d492e9df636c146dcaefd590841a9df83b398524b
 
 $ docker ps 
