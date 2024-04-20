@@ -152,6 +152,10 @@ command 창에서 wsl 명령으로 설치여부를 확인 할 수 있다.
 * 다운로드 경로 : https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/getting-started-install.html
 
   ```sh
+  #2.xx 이상 확인.
+  $ aws --version
+  aws-cli/2.15.40 Python/3.11.8 Windows/10 exe/AMD64 prompt/off
+
   $ aws configure 
   AWS Access Key ID [None]: AKIAZI2LI6AX7VAFZGQ3
   AWS Secret Access Key [None]: l6wB7JaCrNxd+fzWSMVhkxt17QeEFd5wD1XXXXXX
@@ -162,6 +166,19 @@ command 창에서 wsl 명령으로 설치여부를 확인 할 수 있다.
 * 클러스터 접속
 
   ```sh
+  #설정된 계정정보로 ECR Repository 에 접속한다
+  $ aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+  Login Succeeded
+
+  #오류 발생시
+  $ vi ~/.docker/config.json
+
+  ...
+  "credsStore": ""
+  ...
+
+  !wq
+
   #설정된 계정정보로 ECR Repository 에 접속한다
   $ aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423644719.dkr.ecr.us-east-1.amazonaws.com
   Login Succeeded
