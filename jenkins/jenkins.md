@@ -380,26 +380,26 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 Image Build & Push
 
 ```bash
-$ docker build -t spring-test:1.0.0 .
+$ docker build -t edu-spring:${USER_IDENTITY}-1.0.0 .
 [+] Building 21.6s (7/7) FINISHED
 ...
  => => exporting layers                                                                                            0.1s
  => => writing image sha256:b58c2fba32a9df3028874a4e51f119a68f18d5d23254412cc40c3bf08b378770                       0.0s
- => => naming to docker.io/library/spring-test:1.0.0                                                               0.0s
+ => => naming to docker.io/library/edu-spring:${USER_IDENTITY}-1.0.0                                                               0.0s
  
 $ docker images
 REPOSITORY                                                     TAG              IMAGE ID       CREATED              SIZE
-spring-test                                                    1.0.0            b58c2fba32a9   About a minute ago   425MB
+edu-spring                                                    1.0.0            b58c2fba32a9   About a minute ago   425MB
 
-$ docker run -d -p 8080:8080 spring-test:1.0.0
+$ docker run -d -p 8080:8080 edu-spring:${USER_IDENTITY}-1.0.0
 e66ecbfeda0c7c37211bd3c18755b56c8344f88a5d265d966b1aec11ab7877c0
 
 
 $ curl localhost:8080
 Hello Spring World
 
-$ docker tag spring-test:1.0.0 public.ecr.aws/b3v0x0o0/edu-spring:1.0.0
-$ docker push public.ecr.aws/b3v0x0o0/edu-spring:1.0.0
+$ docker tag edu-spring:${USER_IDENTITY}-1.0.0 public.ecr.aws/b3v0x0o0/edu-spring:${USER_IDENTITY}-1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/edu-spring:${USER_IDENTITY}-1.0.0
 
 ```
 
@@ -435,7 +435,7 @@ ENTRYPOINT ["node", "/app.js"]
 Image Build & Push
 
 ```bash
-$ docker build -t express-test:1.0.0 .
+$ docker build -t edu-express:${USER_IDENTITY}-1.0.0 .
 [+] Building 10.1s (4/6)
  => [internal] load build definition from Dockerfile 0.0s
  => => transferring dockerfile: 191B 0.0s
@@ -445,25 +445,25 @@ $ docker build -t express-test:1.0.0 .
  => exporting to image                                                                                                      0.0s
  => => exporting layers                                                                                                     0.0s
  => => writing image sha256:e63790a33616a9b048e1b52e64f1bd7e6f03ea573f55357769ec3e6389a2777c                                0.0s
- => => naming to docker.io/library/express-test:1.0.0                                                                       0.0s
+ => => naming to docker.io/library/edu-express:${USER_IDENTITY}-1.0.0                                                                       0.0s
 
 $ docker images
 REPOSITORY                                                 TAG              IMAGE ID       CREATED         SIZE
-express-test                                               1.0.0            e63790a33616   1 minutes ago   909MB
+edu-express                                               ${USER_IDENTITY}-1.0.0            e63790a33616   1 minutes ago   909MB
 
-$ docker run -d -p 3000:3000 express-test:1.0.0
+$ docker run -d -p 3000:3000 edu-express:1.0.0
 7cc6e3a27c94cfd96a315e9d492e9df636c146dcaefd590841a9df83b398524b
 
 $ docker ps 
 CONTAINER ID   IMAGE                COMMAND                  CREATED             STATUS             PORTS                    NAMES
-275b1fc74dcb   express-test:1.0.0   "docker-entrypoint.s…"   2 seconds ago       Up 1 second        0.0.0.0:3000->3000/tcp   zen_khorana
+275b1fc74dcb   edu-express:${USER_IDENTITY}-1.0.0   "docker-entrypoint.s…"   2 seconds ago       Up 1 second        0.0.0.0:3000->3000/tcp   zen_khorana
 
 $ curl localhost:3000
 Hello Express World
 
-$ docker tag express-test:1.0.0 public.ecr.aws/b3v0x0o0/edu-express:1.0.0
+$ docker tag edu-express:1.0.0 public.ecr.aws/b3v0x0o0/edu-express:${USER_IDENTITY}-1.0.0
 
-$ docker push public.ecr.aws/b3v0x0o0/edu-express:1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/edu-express:${USER_IDENTITY}-1.0.0
 1.0.0: digest: sha256:b93ce4d64616e232916dbbf8938921b42a72de64652069e2b3ff89d26e54a219 size: 2836
 
 ```
@@ -501,7 +501,7 @@ ENTRYPOINT ["python3", "app.py"]
 Image Build & Push
 
 ```bash
-$ docker build -t flask-test:1.0.0 .
+$ docker build -t edu-python:${USER_IDENTITY}-1.0.0 .
 [+] Building 5.0s (9/9) FINISHED
  => [internal] load build definition from Dockerfile                           0.0s
  => => transferring dockerfile: 179B                                           0.0s
@@ -517,22 +517,22 @@ $ docker build -t flask-test:1.0.0 .
  => exporting to image                                                         0.2s
  => => exporting layers                                                        0.2s
  => => writing image sha256:b84ab2d27c54d652a21580f8eb40fdec71d                0.0s
- => => naming to docker.io/library/flask-test:1.0.0                            0.0s
+ => => naming to docker.io/library/edu-python:1.0.0                            0.0s
 
 $ docker images
 REPOSITORY                                                 TAG              IMAGE ID       CREATED              SIZE
-flask-test                                                 1.0.0            270dcda1b444   About a minute ago   68.4MB
+edu-python                                                 ${USER_IDENTITY}-1.0.0            270dcda1b444   About a minute ago   68.4MB
 
-$ docker run -d  --name flask-test -p 8082:8082 flask-test:1.0.0 
+$ docker run -d  --name edu-python -p 8082:8082 edu-python:${USER_IDENTITY}-1.0.0 
 $ docker ps
 CONTAINER ID   IMAGE                COMMAND             CREATED          STATUS          PORTS                    NAMES
-b0d3cac56c35   flask-test:1.0.0     "python3 app.py"    3 seconds ago    Up 2 seconds    0.0.0.0:8082->8082/tcp   flask-test
+b0d3cac56c35   edu-python:1.0.0     "python3 app.py"    3 seconds ago    Up 2 seconds    0.0.0.0:8082->8082/tcp   edu-python
 
 $ curl localhost:8082
 Hello Flask World
 
-$ docker tag flask-test:1.0.0 public.ecr.aws/b3v0x0o0/edu-python:1.0.0
-$ docker push public.ecr.aws/b3v0x0o0/edu-python:1.0.0
+$ docker tag edu-python:${USER_IDENTITY}-1.0.0 public.ecr.aws/b3v0x0o0/edu-python:${USER_IDENTITY}-1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/edu-python:${USER_IDENTITY}-1.0.0
 The push refers to repository [public.ecr.aws/b3v0x0o0/edu-python]
 22e8ae1c18ff: Pushed
 865a5ae0c9f4: Pushed
@@ -597,7 +597,7 @@ RUN apk update \
 Image Build & Push
 
 ```bash
-$ docker build -t public.ecr.aws/b3v0x0o0/build-tool:1.0.0 .
+$ docker build -t public.ecr.aws/b3v0x0o0/build-tool:${USER_IDENTITY}-1.0.0 .
 
 [+] Building 26.4s (7/7) FINISHED
  => [internal] load build definition from Dockerfile                                                      0.0s
@@ -611,15 +611,15 @@ $ docker build -t public.ecr.aws/b3v0x0o0/build-tool:1.0.0 .
 
 $ docker images
 REPOSITORY                                                      TAG              IMAGE ID       CREATED              SIZE
-public.ecr.aws/b3v0x0o0/build-tool          1.0.0            ce60ae205666   About a minute ago   484MB
+public.ecr.aws/b3v0x0o0/build-tool          ${USER_IDENTITY}-1.0.0            ce60ae205666   About a minute ago   484MB
 
-$ docker run -d public.ecr.aws/b3v0x0o0/build-tool:1.0.0 sleep 365d
+$ docker run -d public.ecr.aws/b3v0x0o0/build-tool:${USER_IDENTITY}-1.0.0 sleep 365d
 
 #on mac os
-$ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/build-tool:aws4 .
+$ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/build-tool:${USER_IDENTITY}-1.0.0 .
 
-$ docker push public.ecr.aws/b3v0x0o0/build-tool:aws4
-$ docker run -d public.ecr.aws/b3v0x0o0/build-tool:local sleep 365d
+$ docker push public.ecr.aws/b3v0x0o0/build-tool:${USER_IDENTITY}-1.0.0
+$ docker run -d public.ecr.aws/b3v0x0o0/build-tool:${USER_IDENTITY}-1.0.0 sleep 365d
 
 
 
@@ -632,7 +632,7 @@ Go Version:         go1.11.6
 OS/Arch:            linux/amd64
 $ exit
 
-$ docker push public.ecr.aws/b3v0x0o0/build-tool:1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/build-tool:${USER_IDENTITY}-1.0.0
 The push refers to repository [public.ecr.aws/b3v0x0o0/build-tool]
 af60d788c1d5: Layer already exists
 c4cfb19af9c8: Layer already exists
@@ -660,10 +660,10 @@ COPY ./kustomize /usr/local/bin/kustomize
 Image Build & Push
 
 ```bash
-$ docker build -t maven-build-tool:1.0.0 -f .Dockerfile_maven 
+$ docker build -t maven-build-tool:${USER_IDENTITY}-1.0.0 -f .Dockerfile_maven 
 
 #mac OS Build
-$ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/maven-build-tool:1.0.0 -f Dockerfile_maven .
+$ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/maven-build-tool:${USER_IDENTITY}-1.0.0 -f Dockerfile_maven .
 
 [+] Building 3.0s (7/7) FINISHED
  => [internal] load build definition from Dockerfile_maven                             0.0s
@@ -682,9 +682,9 @@ $ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/maven-build-too
 
 $ docker images
 REPOSITORY                                                      TAG       IMAGE ID       CREATED            SIZE
-public.ecr.aws/b3v0x0o0/maven-build-tool    1.0.0     fb5cd9a2a8a3   About a minute ago 808MB
+public.ecr.aws/b3v0x0o0/maven-build-tool    ${USER_IDENTITY}-1.0.0     fb5cd9a2a8a3   About a minute ago 808MB
 
-$ docker run -d public.ecr.aws/b3v0x0o0/maven-build-tool:1.0.0 sleep 365d
+$ docker run -d public.ecr.aws/b3v0x0o0/maven-build-tool:${USER_IDENTITY}-1.0.0 sleep 365d
 
 $ docker exec -it ${CONTAINER_ID} bash
 $ mvn -version
@@ -695,7 +695,7 @@ Default locale: en, platform encoding: UTF-8
 OS name: "linux", version: "5.10.102.1-microsoft-standard-wsl2", arch: "amd64", family: "unix"
 $ exit
 
-$ docker push public.ecr.aws/b3v0x0o0/maven-build-tool:1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/maven-build-tool:${USER_IDENTITY}-1.0.0
 The push refers to repository [public.ecr.aws/b3v0x0o0/maven-build-tool]
 4d950bb416bc: Layer already exists
 4ddad1bac86f: Layer already exists
@@ -723,10 +723,10 @@ COPY ./kustomize /usr/local/bin/kustomize
 Image Build & Push
 
 ```bash
-$ docker build -t public.ecr.aws/b3v0x0o0/npm-build-tool:1.0.0 -f .\Dockerfile_npm .
+$ docker build -t public.ecr.aws/b3v0x0o0/npm-build-tool:${USER_IDENTITY}-1.0.0 -f .\Dockerfile_npm .
 
 #mac os
-$ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/npm-build-tool:1.0.0 -f Dockerfile_npm .
+$ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/npm-build-tool:${USER_IDENTITY}-1.0.0 -f Dockerfile_npm .
 
 [+] Building 3.0s (7/7) FINISHED                                                      
  => [internal] load build definition from Dockerfile_npm                              0.0s
@@ -741,7 +741,7 @@ $ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/npm-build-tool:
  => exporting to image                                                                0.1s
  => => exporting layers                                                               0.1s
  => => writing image sha256:57e6e02812f56ab3fdb029ead019e207a4462261cbf97c8680656e3d  0.0s
- => => naming to public.ecr.aws/b3v0x0o0/npm-build-tool:1.0.0     0.0s
+ => => naming to public.ecr.aws/b3v0x0o0/npm-build-tool:${USER_IDENTITY}-1.0.0     0.0s
 
 
 $ docker images
@@ -749,7 +749,7 @@ REPOSITORY                                                      TAG       IMAGE 
 public.ecr.aws/b3v0x0o0/npm-build-tool    1.0.0     fb5cd9a2a8a3   About a minute ago 924MB
 
 
-$ docker run -d public.ecr.aws/b3v0x0o0/npm-build-tool:1.0.0 sleep 365d
+$ docker run -d public.ecr.aws/b3v0x0o0/npm-build-tool:${USER_IDENTITY}-1.0.0 sleep 365d
 
 $ docker exec -it ${CONTAINER_ID} bash
 $ npm version
@@ -775,7 +775,7 @@ $ npm version
 }
 $ exit
 
-$ docker push public.ecr.aws/b3v0x0o0/npm-build-tool:1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/npm-build-tool:${USER_IDENTITY}-1.0.0
 The push refers to repository [public.ecr.aws/b3v0x0o0/npm-build-tool]
 564b407be96a: Pushed
 be322b479aee: Layer already exists
@@ -808,10 +808,10 @@ Image Build & Push
 
 
 ```bash
-$ docker build -t public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0 -f .\Dockerfile_python .
+$ docker build -t public.ecr.aws/b3v0x0o0/python-build-tool:${USER_IDENTITY}-1.0.0 -f .\Dockerfile_python .
 
 #mac os
-$ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0 -f Dockerfile_python .
+$ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/python-build-tool:${USER_IDENTITY}-1.0.0 -f Dockerfile_python .
 
 [+] Building 7.5s (7/7) FINISHED
  => [internal] load build definition from Dockerfile_python                                       0.0s
@@ -836,22 +836,22 @@ $ docker build --platform linux/amd64 -t public.ecr.aws/b3v0x0o0/python-build-to
  => exporting to image                                                                            0.1s
  => => exporting layers                                                                           0.1s
  => => writing image sha256:a9d3550eb858e1e56ec49eb4025b82cd368351919cc211d201546f8e21846370      0.0s
- => => naming to public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0              0.0s
+ => => naming to public.ecr.aws/b3v0x0o0/python-build-tool:${USER_IDENTITY}-1.0.0              0.0s
 
 
 $ docker images
 REPOSITORY                                                      TAG       IMAGE ID       CREATED            SIZE
-public.ecr.aws/b3v0x0o0/python-build-tool    1.0.0     fb5cd9a2a8a3   About a minute ago 1.02GB
+public.ecr.aws/b3v0x0o0/python-build-tool    ${USER_IDENTITY}-1.0.0     fb5cd9a2a8a3   About a minute ago 1.02GB
 
 
-$ docker run -d public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0 sleep 365d
+$ docker run -d public.ecr.aws/b3v0x0o0/python-build-tool:${USER_IDENTITY}-1.0.0 sleep 365d
 
 $ docker exec -it ${CONTAINER_ID} bash
 $ python --version
 Python 3.11.5
 $ exit
 
-$ docker push public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0
+$ docker push public.ecr.aws/b3v0x0o0/python-build-tool:${USER_IDENTITY}-1.0.0
 The push refers to repository [public.ecr.aws/b3v0x0o0/python-build-tool]
 700a6240cd12: Pushed
 49df279faf6c: Pushed
@@ -957,11 +957,10 @@ $ helm -n jenkins-admin install jenkins jenkinsci/jenkins --version=4.6.4 -f val
 #helm chart install cloud
 helm -n jenkins-admin install jenkins jenkinsci/jenkins --version=4.6.4 -f values.yaml \
 --set controller.ingress.enabled=true \
---set controller.ingress.hostName=jenkins.cjs.com \
+--set controller.ingress.hostName=${USER_IDENTITY}-jenkins.com \
 --set controller.ingress.ingressClassName=nginx \
 --set controller.ingress.path=/ \
 --set controller.adminPassword=admin \
---set controller.imagePullSecretName=harbor \
 --set serviceAccount.create=false \
 --set serviceAccount.name=jenkins-admin \
 --set persistence.enabled=true \
@@ -1248,8 +1247,8 @@ docker가 **CRI(Container Runtime Interface)** 를 구현하지 않았고, kuber
 def label = "hello-${UUID.randomUUID().toString()}"
 podTemplate(label: label,
 	containers: [
-        containerTemplate(name: 'maven', image: 'public.ecr.aws/b3v0x0o0/maven-build-tool:1.0.6', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:aws4', ttyEnabled: true, command: 'cat', privileged:true)
+        containerTemplate(name: 'maven', image: 'public.ecr.aws/b3v0x0o0/maven-build-tool:${USER_IDENTITY}-1.0.0', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:${USER_IDENTITY}-1.0.0', ttyEnabled: true, command: 'cat', privileged:true)
     ]) {
     node(label) {
         stage('Get Source') {
@@ -1271,15 +1270,15 @@ podTemplate(label: label,
                     aws configure set region ap-northeast-2 
                     aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3v0x0o0
 
-                    podman build -t public.ecr.aws/b3v0x0o0/cjs-edu:1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
-                    podman push public.ecr.aws/b3v0x0o0/cjs-edu:1.0.0
+                    podman build -t public.ecr.aws/b3v0x0o0/edu-spring:${USER_IDENTITY}-1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
+                    podman push public.ecr.aws/b3v0x0o0/edu-spring:${USER_IDENTITY}-1.0.0
                 """
             }
             /* if used private registry
             podman login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} ${NEXUS_HOST} --tls-verify=false
             podman push ${NEXUS_HOST}/user02/spring-jenkins:1.0.0  --tls-verify=false
             */
-            
+            /*
             stage('gitOps Update') {
                 sh"""
                     cd cicd_repository/sample/gitops/hello-world-spring
@@ -1287,13 +1286,14 @@ podTemplate(label: label,
                     git config --global user.email "icistrsa"
                     git config --global user.name "icistrsa"
           
-                    kustomize edit set image public.ecr.aws/b3v0x0o0/cjs-edu:1.0.0
+                    kustomize edit set image public.ecr.aws/b3v0x0o0/edu-spring:${USER_IDENTITY}-1.0.0
                     
                     git add .
                     git commit -am 'update  from Jenkins'
                     git push https://icistrsa:${GIT_TOKEN}@github.com/icistrsa/cicd_repository.git
                 """
             }
+            /*
         } 
     }
 }
@@ -1316,8 +1316,8 @@ podTemplate(label: label,
 def label = "hello-${UUID.randomUUID().toString()}"
 podTemplate(label: label,
 	containers: [
-        containerTemplate(name: 'npm', image: 'public.ecr.aws/b3v0x0o0/npm-build-tool:1.0.0', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:aws4', ttyEnabled: true, command: 'cat', privileged:true)
+        containerTemplate(name: 'npm', image: 'public.ecr.aws/b3v0x0o0/npm-build-tool:${USER_IDENTITY}-1.0.0', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:${USER_IDENTITY}-1.0.0', ttyEnabled: true, command: 'cat', privileged:true)
     ]) {
     node(label) {
         stage('Get Source') {
@@ -1338,8 +1338,8 @@ podTemplate(label: label,
                     aws configure set region ap-northeast-2 
                     aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3v0x0o0
 
-                    podman build -t public.ecr.aws/b3v0x0o0/edu-express:1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
-                    podman push public.ecr.aws/b3v0x0o0/edu-express:1.0.0
+                    podman build -t public.ecr.aws/b3v0x0o0/edu-express:${USER_IDENTITY}-1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
+                    podman push public.ecr.aws/b3v0x0o0/edu-express:${USER_IDENTITY}-1.0.0
                 """
             }
             /*
@@ -1347,7 +1347,7 @@ podTemplate(label: label,
             podman login -u ${NEXUS_USERNAME} -p ${NEXUS_PASSWORD} ${NEXUS_HOST} --tls-verify=false
             podman push ${NEXUS_HOST}/user02/spring-jenkins:1.0.0  --tls-verify=false
             */
-            
+            /*
             stage('gitOps Update') {
                 sh"""
                     cd cicd_repository/sample/gitops/hello-world-express
@@ -1355,13 +1355,14 @@ podTemplate(label: label,
                     git config --global user.email "icistrsa"
                     git config --global user.name "icistrsa"
           
-                    kustomize edit set image public.ecr.aws/b3v0x0o0/edu-express:1.0.0
+                    kustomize edit set image public.ecr.aws/b3v0x0o0/edu-express:${USER_IDENTITY}-1.0.0
                     
                     git add .
                     git commit -am 'update  from Jenkins'
                     git push https://icistrsa:${GIT_TOKEN}@github.com/icistrsa/cicd_repository.git
                 """
             }
+            */
         } 
     }
 }
@@ -1383,8 +1384,8 @@ podTemplate(label: label,
 def label = "hello-${UUID.randomUUID().toString()}"
 podTemplate(label: label,
 	containers: [
-        containerTemplate(name: 'python', image: 'public.ecr.aws/b3v0x0o0/python-build-tool:1.0.0', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:aws4', ttyEnabled: true, command: 'cat', privileged:true)
+        containerTemplate(name: 'python', image: 'public.ecr.aws/b3v0x0o0/python-build-tool:${USER_IDENTITY}-1.0.0', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:${USER_IDENTITY}-1.0.0', ttyEnabled: true, command: 'cat', privileged:true)
     ]) {
     node(label) {
         stage('Get Source') {
@@ -1407,8 +1408,8 @@ podTemplate(label: label,
                     aws configure set region ap-northeast-2 
                     aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3v0x0o0
 
-                    podman build -t public.ecr.aws/b3v0x0o0/edu-python:1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
-                    podman push public.ecr.aws/b3v0x0o0/edu-python:1.0.0
+                    podman build -t public.ecr.aws/b3v0x0o0/edu-python:${USER_IDENTITY}-1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
+                    podman push public.ecr.aws/b3v0x0o0/edu-python:${USER_IDENTITY}-1.0.0
                 """
             }
             /* if used private registry
@@ -1416,6 +1417,7 @@ podTemplate(label: label,
             podman push ${NEXUS_HOST}/user02/spring-jenkins:1.0.0  --tls-verify=false
             */
             
+          /*
             stage('gitOps Update') {
                 sh"""
                     cd cicd_repository/sample/gitops/hello-world-flask
@@ -1423,13 +1425,14 @@ podTemplate(label: label,
                     git config --global user.email "icistrsa"
                     git config --global user.name "icistrsa"
           
-                    kustomize edit set image public.ecr.aws/b3v0x0o0/edu-python:1.0.0
+                    kustomize edit set image public.ecr.aws/b3v0x0o0/edu-python:${USER_IDENTITY}-1.0.0
                     
                     git add .
                     git commit -am 'update  from Jenkins'
                     git push https://icistrsa:${GIT_TOKEN}@github.com/icistrsa/cicd_repository.git
                 """
             }
+            */
         } 
     }
 }
@@ -1613,7 +1616,6 @@ https://plugins.jenkins.io/
 https://arisu1000.tistory.com/27848
 https://blog.voidmainvoid.net/140
 https://narup.tistory.com/179
-localhost:8085/albums/1
 https://jamesdefabia.github.io/docs/user-guide/kubectl/kubectl_create_secret_docker-registry/
 https://nodejs.org/ko/docs/guides/nodejs-docker-webapp
 https://docs.docker.com/engine/reference/builder/

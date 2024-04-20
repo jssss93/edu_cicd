@@ -137,7 +137,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-spring
-  namespace: argocd
+  namespace: ${USER_IDENTITY}
 spec:
   replicas: 1
   revisionHistoryLimit: 3
@@ -150,7 +150,7 @@ spec:
         app: hello-spring
     spec:
       containers:
-      - image: public.ecr.aws/b3v0x0o0/cjs-edu
+      - image: public.ecr.aws/b3v0x0o0/edu-spring
         name: hello-spring
         ports:
         - containerPort: 8080
@@ -164,7 +164,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: hello-spring-svc
-  namespace: argocd
+  namespace: ${USER_IDENTITY}
 spec:
   ports:
   - port: 80
@@ -179,12 +179,12 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hello-world-spring-nexus
-  namespace: argocd
+  name: hello-world-spring-ingress
+  namespace: ${USER_IDENTITY}
 spec:
   ingressClassName: nginx
   rules:
-  - host: edu00-spring.com
+  - host: ${USER_IDENTITY}-spring.com
     http:
       paths:
       - backend:
@@ -207,8 +207,8 @@ resources:
 - deployment.yaml
 - ingress.yaml
 images:
-- name: public.ecr.aws/b3v0x0o0/cjs-edu
-  newTag: 1.0.0
+- name: public.ecr.aws/b3v0x0o0/edu-spring
+  newTag: ${USER_IDENTITY}-1.0.0
 ```
 
 
@@ -239,7 +239,7 @@ spec:
         app: hello-express
     spec:
       containers:
-      - image: nexus-repo.ssongman.duckdns.org/${USER_IDENTITY}/express-jenkins:1.0.0
+      - image: public.ecr.aws/b3v0x0o0/edu-express
         name: hello-express
         ports:
         - containerPort: 3000
@@ -268,12 +268,12 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: hello-world-express-nexus
+  name: hello-world-express-ingress
   namespace: ${USER_IDENTITY}
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   rules:
-  - host: hello-world-express.${USER_IDENTITY}.cloud.35.209.207.26.nip.io
+  - host: ${USER_IDENTITY}-express.com
     http:
       paths:
       - backend:
@@ -295,7 +295,7 @@ resources:
 - deployment.yaml
 - ingress.yaml
 images:
-- name: nexus-repo.ssongman.duckdns.org/${USER_IDENTITY}/express-jenkins
+- name: public.ecr.aws/b3v0x0o0/edu-express
   newTag: 1.0.0
 ```
 
@@ -314,7 +314,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-flask
-  namespace: argocd
+  namespace: ${USER_IDENTITY}
 spec:
   replicas: 1
   revisionHistoryLimit: 3
@@ -356,7 +356,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: hello-world-flask-ingress
-  namespace: argocd
+  namespace: ${USER_IDENTITY}
 spec:
   ingressClassName: nginx
   rules:
@@ -429,7 +429,7 @@ $ cd argo-cd
 ```bash
 $ helm install argocd bitnami/argo-cd --version 5.1.2 -f values.yaml -n argocd \
 --set server.ingress.enabled=true \
---set server.ingress.hostname=argocd.cjs.com \
+--set server.ingress.hostname=${USER_IDENTITY}-argocd.com \
 --set server.ingress.ingressClassName=nginx \
 --set server.insecure=true \
 --set config.secret.argocdServerAdminPassword=admin
@@ -447,7 +447,7 @@ $ helm delete argocd -n ${USER_IDENTITY}
 
 #### 4.1 초기설정
 
-**ArgoCD 접속**(argocd.${USER_IDENTITY}.cloud.35.209.207.26.nip.io)
+**ArgoCD 접속**(${USER_IDENTITY}-argocd.com)
 
 ![image-20230917221252687](asset/argocd/image-20230917221252687.png)
 
@@ -497,7 +497,7 @@ $ helm delete argocd -n ${USER_IDENTITY}
 $ kubectl get all -n ${USER_IDENTITY}
 ```
 
-https://hello-world-spring.user01.cloud.35.209.207.26.nip.io
+${USER_IDENTITY}-spring.com
 
 ![image-20230924020610178](asset/argocd/image-20230924020610178.png)
 
@@ -538,8 +538,8 @@ def TAG = new Date().format('yyyyMMddHHmmss')
 def label = "hello-${UUID.randomUUID().toString()}"
 podTemplate(label: label,
 	containers: [
-        containerTemplate(name: 'maven', image: 'public.ecr.aws/b3v0x0o0/maven-build-tool:1.0.6', ttyEnabled: true, command: 'cat'),
-        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:aws4', ttyEnabled: true, command: 'cat', privileged:true)
+        containerTemplate(name: 'maven', image: 'public.ecr.aws/b3v0x0o0/maven-build-tool:${USER_IDENTITY}-1.0.0', ttyEnabled: true, command: 'cat'),
+        containerTemplate(name: 'podman', image: 'public.ecr.aws/b3v0x0o0/build-tool:${USER_IDENTITY}-1.0.0', ttyEnabled: true, command: 'cat', privileged:true)
     ]) {
     node(label) {
         stage('Get Source') {
@@ -561,8 +561,8 @@ podTemplate(label: label,
                     aws configure set region ap-northeast-2 
                     aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3v0x0o0
 
-                    podman build -t public.ecr.aws/b3v0x0o0/cjs-edu:1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
-                    podman push public.ecr.aws/b3v0x0o0/cjs-edu:1.0.0
+                    podman build -t public.ecr.aws/b3v0x0o0/edu-spring:${USER_IDENTITY}-1.0.0 --cgroup-manager=cgroupfs --tls-verify=false . 
+                    podman push public.ecr.aws/b3v0x0o0/edu-spring:${USER_IDENTITY}-1.0.0
                 """
             }
             /* if used private registry
@@ -577,7 +577,7 @@ podTemplate(label: label,
                     git config --global user.email "icistrsa"
                     git config --global user.name "icistrsa"
           
-                    kustomize edit set image public.ecr.aws/b3v0x0o0/cjs-edu:${TAG}
+                    kustomize edit set image public.ecr.aws/b3v0x0o0/edu-spring:${USER_IDENTITY}-${TAG}
                     
                     git add .
                     git commit -am 'update  from Jenkins'
