@@ -940,7 +940,7 @@ $ cd jenkins
 $ vi values.yaml
 
 #helm chart install vm
-$ helm -n jenkins-admin install jenkins jenkinsci/jenkins --version=4.6.4 -f values.yaml \
+$ helm -n ${USER_IDENTITY} install jenkins jenkinsci/jenkins --version=4.6.4 -f values.yaml \
 --set controller.ingress.enabled=true \
 --set controller.adminPassword=admin \
 --set serviceAccount.create=false \
@@ -951,12 +951,13 @@ $ helm -n jenkins-admin install jenkins jenkinsci/jenkins --version=4.6.4 -f val
 --set agent.resources.limits.cpu=1024m \
 --set agent.resources.limits.memory=1024Mi
 
+
 #helm chart install cloud
-helm -n jenkins-admin install jenkins jenkinsci/jenkins --version=4.6.4 -f values.yaml \
+helm -n ${USER_IDENTITY} install jenkins jenkinsci/jenkins --version=4.6.4 -f values.yaml 
 --set controller.ingress.enabled=true \
 --set controller.ingress.hostName=${USER_IDENTITY}-jenkins.com \
 --set controller.ingress.ingressClassName=nginx \
---set controller.ingress.path=/ \
+--set controller.ingress.path=\\/ \
 --set controller.adminPassword=admin \
 --set serviceAccount.create=false \
 --set serviceAccount.name=jenkins-admin \
@@ -968,7 +969,7 @@ helm -n jenkins-admin install jenkins jenkinsci/jenkins --version=4.6.4 -f value
 
 
 #helm chart delete
-$ helm -n jenkins-admin delete jenkins
+$ helm -n ${USER_IDENTITY} delete jenkins
 
 ```
 
