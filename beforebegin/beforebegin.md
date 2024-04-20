@@ -101,9 +101,9 @@ command 창에서 wsl 명령으로 설치여부를 확인 할 수 있다.
 
   ```sh
   $ aws configure 
-  AWS Access Key ID [None]: <발급한 Key id>
-  AWS Secret Access Key [None]: <발급한 Secret Access Key>
-  Default region name [None]: 
+  AWS Access Key ID [None]: AKIAZI2LI6AX7VAFZGQ3
+  AWS Secret Access Key [None]: l6wB7JaCrNxd+fzWSMVhkxt17QeEFd5wD1XXXXXX
+  Default region name [None]: ap-northeast-2
   Default output format [None]:
   ```
 
