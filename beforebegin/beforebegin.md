@@ -106,10 +106,29 @@ command 창에서 wsl 명령으로 설치여부를 확인 할 수 있다.
   Default region name [None]: ap-northeast-2
   Default output format [None]:
   
-  #인증 토큰을 검색하고 레지스트리에 대해 Docker 클라이언트를 인증합니다.
-  $ aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/b3v0x0o0
+  $ aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 637423644719.dkr.ecr.us-east-1.amazonaws.com
   
+  
+  #인증 토큰을 검색하고 레지스트리에 대해 Docker 클라이언트를 인증합니다.
   $ aws eks --region ap-northeast-2 update-kubeconfig --name education-eks-dCr3ILQB
+  
+  kubectl get node    
+  NAME                                            STATUS   ROLES    AGE    VERSION
+  ip-10-0-1-181.ap-northeast-2.compute.internal   Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-1-183.ap-northeast-2.compute.internal   Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-1-232.ap-northeast-2.compute.internal   Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-1-252.ap-northeast-2.compute.internal   Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-2-130.ap-northeast-2.compute.internal   Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-2-152.ap-northeast-2.compute.internal   Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-2-160.ap-northeast-2.compute.internal   Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-2-236.ap-northeast-2.compute.internal   Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-2-55.ap-northeast-2.compute.internal    Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-2-93.ap-northeast-2.compute.internal    Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-3-167.ap-northeast-2.compute.internal   Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-3-169.ap-northeast-2.compute.internal   Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-3-243.ap-northeast-2.compute.internal   Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-3-48.ap-northeast-2.compute.internal    Ready    <none>   122m   v1.28.5-eks-5e0fdde
+  ip-10-0-3-93.ap-northeast-2.compute.internal    Ready    <none>   122m   v1.28.5-eks-5e0fdde
   ```
 
 
