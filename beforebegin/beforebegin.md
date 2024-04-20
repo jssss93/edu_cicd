@@ -98,12 +98,54 @@ command 창에서 wsl 명령으로 설치여부를 확인 할 수 있다.
 교육문서를 다운로드 받으려면 Git Command 가 필요하다. Windows 에서는 기본 제공되지 않아 별도 설치 해야 한다.
 
 - 다운로드 주소 : https://github.com/git-for-windows/git/releases/download/v2.40.1.windows.1/Git-2.40.1-64-bit.exe
-
 - 참조 링크 : https://git-scm.com/
 
-  
 
-## 1.4 AWS-CLI 2 설치
+
+## 1.4 Typora 설치
+
+교육자료는 MarkDown 문서로 되어 있으며 MD 파일을 확인하기 위해서  typora를 설치 한다.
+
+
+
+### (1) 설치
+
+- download 위치
+  - 다운로드주소 : https://download.typora.io/windows/typora-setup-x64.exe
+
+
+- [참고] 링크: https://typora.io/
+
+
+- Typora 실행
+
+
+
+
+
+### (2) Typora 환경설정
+
+원할한 실습을 위해 코드펜스 옵션을 아래와 같이 변경하자.
+
+- 코드펜스 설정
+  - 메뉴 : 파일 > 환경설정 > 마크다운 > 코드펜스
+    - 코드펜스에서 줄번호 보이기 - check
+    - 긴문장 자동 줄바꿈 : uncheck
+
+
+
+
+![image-20220702154444773](beforebegin.assets/image-20220702154444773.png)
+
+
+
+- 개요보기 설정
+  - 메뉴 : 보기 > 개요
+    - 개요 : check
+
+
+
+## 1.5 AWS-CLI 2 설치
 
 * EKS Cluster 및 ECR 접근을 위해  aws-cli2 를 설치한다.
 
@@ -149,47 +191,6 @@ command 창에서 wsl 명령으로 설치여부를 확인 할 수 있다.
   
 
 
-
-## 1.5 Typora 설치
-
-교육자료는 MarkDown 문서로 되어 있으며 MD 파일을 확인하기 위해서  typora를 설치 한다.
-
-
-
-### (1) 설치
-
-- download 위치
-  - 다운로드주소 : https://download.typora.io/windows/typora-setup-x64.exe
-
-
-- [참고] 링크: https://typora.io/
-
-
-- Typora 실행
-
-
-
-
-
-### (2) Typora 환경설정
-
-원할한 실습을 위해 코드펜스 옵션을 아래와 같이 변경하자.
-
-- 코드펜스 설정
-  - 메뉴 : 파일 > 환경설정 > 마크다운 > 코드펜스
-    - 코드펜스에서 줄번호 보이기 - check
-    - 긴문장 자동 줄바꿈 : uncheck
-
-
-
-
-![image-20220702154444773](beforebegin.assets/image-20220702154444773.png)
-
-
-
-- 개요보기 설정
-  - 메뉴 : 보기 > 개요
-    - 개요 : check
 
 
 
