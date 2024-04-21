@@ -427,7 +427,7 @@ $ cd argo-cd
 #### 3.2 helm install&delete
 
 ```bash
-$ helm install argocd bitnami/argo-cd --version 5.1.2 -f values.yaml -n argocd \
+$ helm install argocd bitnami/argo-cd --version 5.1.2 -f values.yaml -n ${USER_IDENTITY} \
 --set server.ingress.enabled=true \
 --set server.ingress.hostname=${USER_IDENTITY}-argocd.com \
 --set server.ingress.ingressClassName=nginx \

@@ -1007,12 +1007,6 @@ Jenkins 접속
 
 ![image-20230918212051456](asset/jenkins/image-20230918212051456.png)
 
-**Plugin install**
-
-![image-20230923010016083](asset/jenkins/image-20230923010016083.png)
-
-
-
 
 
 #### 4.2 Credentials 설정
@@ -1032,6 +1026,8 @@ Jenkins 접속
 Username: icistrsa
 
 Password: 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
+
+ID : git-token
 
 ![image-20230923010524655](asset/jenkins/image-20230923010524655.png)
 
@@ -1065,7 +1061,7 @@ Jenkins 관리 -> System 이동
 
 이름 : AWS_ACCESS_KEY
 
-값 :  
+값 :  l6wB7JaCrNxd+fzWSMVhkxt17QeEFd5wD1XXXXXX
 
 ---
 
@@ -1162,7 +1158,7 @@ podTemplate(label: label,
 def label = "hello-${UUID.randomUUID().toString()}"
 podTemplate(label: label,
 	containers: [
-        containerTemplate(name: 'podman', image: 'mattermost/podman:1.8.0', ttyEnabled: true, command: 'cat', privileged:true)
+        containerTemplate(name: 'podman', image: 'mgoltzsche/podman:4.9.4-minimal', ttyEnabled: true, command: 'cat', privileged:true)
   ]) {
 
     node(label) {
@@ -1291,7 +1287,7 @@ podTemplate(label: label,
                     git push https://icistrsa:${GIT_TOKEN}@github.com/icistrsa/cicd_repository.git
                 """
             }
-            /*
+            */
         } 
     }
 }
