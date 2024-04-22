@@ -953,7 +953,7 @@ $ helm -n ${USER_IDENTITY} install jenkins jenkinsci/jenkins --version=4.6.4 -f 
 
 
 #helm chart install cloud
-helm -n ${USER_IDENTITY} install jenkins jenkinsci/jenkins --version=4.6.4 -f values.yaml 
+helm -n ${USER_IDENTITY} install jenkins jenkinsci/jenkins --version=4.6.4 -f values.yaml \
 --set controller.ingress.enabled=true \
 --set controller.ingress.hostName=${USER_IDENTITY}-jenkins.com \
 --set controller.ingress.ingressClassName=nginx \
